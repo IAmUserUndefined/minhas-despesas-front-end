@@ -1,0 +1,102 @@
+<section>
+
+    <article class="container-fluid">
+        <div class="row align-items-md-center" style="height: 60vh;">
+            <div class="col-sm-8 mx-auto mt-5">
+                <form name="login" class="form-control p-3">
+
+                    <h3 class="text-center mb-3">Login</h3>
+
+                    <input type="text" class="form-control mb-3" placeholder="Email" name="email">
+                    <input type="password" class="form-control mb-3" placeholder="Senha" name="password">
+
+                    <button type="button" class="btn btn-secondary d-block mx-auto mb-3" onclick="loginUser()" name="button">
+                        Entrar
+                    </button>
+
+                    <a href="#" class="text-center text-secondary d-block mb-3 fw-bold" data-bs-toggle="modal"
+                        data-bs-target="#register">Ainda não tem um cadastro?
+                    </a>
+
+                    <a href="#" class="text-center text-secondary d-block fw-bold" data-bs-toggle="modal"
+                        data-bs-target="#forgetPassword">Esqueceu sua senha?
+                    </a>
+
+                </form>
+
+            </div>
+        </div>
+    </article>
+
+    <article class="modal fade" id="register" tabindex="-1" aria-labelledby="register" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="register">Cadastrar Usuário</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <form class="form-control p-3" name="register">
+
+                        <input class="form-control mb-3" type="text" name="email" placeholder="Email">
+                        <input class="form-control mb-3" type="password" name="password" placeholder="Senha">
+                        <input class="form-control mb-3" type="password" name="passwordConfirm" placeholder="Confirmação de Senha">
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary d-block mx-auto" name="button" data-bs-dismiss="modal" onclick="registerUser()">
+                                Cadastrar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <article class="modal fade" id="forgetPassword" tabindex="-1" aria-labelledby="recovyPassword" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="recovyPassword">Esqueci Minha Senha</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <form class="form-control p-3" name="forgetPassword">
+
+                        <input class="form-control mb-3" type="email" name="email" placeholder="Seu E-mail">
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary d-block mx-auto" name="button" onclick="recoverPassword()"
+                                data-bs-dismiss="modal">
+                                Enviar Email
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </article>
+
+    <article class="modal fade" id="message" tabindex="-1" aria-labelledby="message" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="message">Mensagem</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <h3 id="response" class="text-center"></h3>
+                </div>
+
+            </div>
+        </div>
+    </article>
+
+</section>

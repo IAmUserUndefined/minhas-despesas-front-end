@@ -1,0 +1,40 @@
+<section>
+
+  <article class="container-fluid">
+    <div class="row align-items-md-center" style="height: 60vh;">
+      <div class="col-sm-8 mx-auto mt-5">
+        <form class="form-control p-3" name="recoverPassword">
+
+          <h3 class="text-center mb-3">Atualizar Senha</h3>
+
+          <input type="password" class="form-control mb-3" name="password" placeholder="Nova Senha">
+          <input type="password" class="form-control mb-3" name="passwordConfirm" placeholder="Confirmação de Nova Senha">
+
+          <button type="button" class="btn btn-secondary d-block mx-auto mb-3" onclick="confirmRecoverPassword()">
+            Atualizar Senha
+          </button>
+
+        </form>
+
+      </div>
+    </div>
+  </article>
+
+  <article class="modal fade" id="message" tabindex="-1" aria-labelledby="message" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="message">Mensagem</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <h3 id="response" class="text-center"></h3>
+        </div>
+
+      </div>
+    </div>
+  </article>
+
+</section>
