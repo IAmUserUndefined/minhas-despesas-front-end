@@ -5,6 +5,14 @@ routes.get('/', function (req, res) {
     res.render('login', {layout : 'layout', title: 'Login'})
 })
 
+routes.get('/cadastrar', function (req, res) {
+    res.render('cadastrar', {layout : 'layout', title: 'Cadastro'})
+})
+
+routes.get('/esqueci-senha', function (req, res) {
+    res.render('esqueci-senha', {layout : 'layout', title: 'Esqueci Senha'})
+})
+
 routes.get('/verify-email', function (req, res) {
     res.render('verificar-email', {layout : 'layout', title: 'Verificando Email'})
 })

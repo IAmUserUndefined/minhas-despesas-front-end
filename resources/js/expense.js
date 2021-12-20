@@ -1,12 +1,15 @@
 const registerExpense = async () => {
 
-    let expenseName = document.getElementById('expenseName')
-    let dueDate = document.getElementById('dueDate')
-    let price = document.getElementById('price')
+
+    const form = document.forms.registerExpenseForm
+
+    const { expenseName, dueDate, price, button } = form
 
     if (!expenseName.value || !dueDate.value || !price.value) {
         return showModal("Preencha todos os campos")
     }
+
+    addGIF(button)
 
     const options = {
         method: 'POST',
@@ -30,6 +33,8 @@ const registerExpense = async () => {
     expenseName.value = ''
     dueDate.value = ''
     price.value = ''
+
+    removeGIF(button, "Cadastrar Despesa")
 
     showModal(responseJSON.response)
 }

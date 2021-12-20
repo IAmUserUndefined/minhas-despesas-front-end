@@ -2,18 +2,20 @@ const registerUser = async () => {
 
     const form = document.forms.register
 
-    const { email, password, passwordConfirm } = form
+    const { email, password, passwordConfirm, button } = form
+
+    addGIF(button);
 
     if(!email.value || !password.value || !passwordConfirm.value){
-        return document.getElementById('response').innerHTML = 'Preencha todos os campos'
+        return showModal('Preencha todos os campos')
     }
 
     if(!passwordRules.test(password.value)) {
-        return document.getElementById('response').innerHTML = 'Sua senha precisar ter 8 caracteres, uma letra maiúscula, uma minúscula e um número'
+        return showModal('Sua senha precisar ter 8 caracteres, uma letra maiúscula, uma minúscula e um número')
     }
 
     if(password.value !== passwordConfirm.value) {
-        return document.getElementById('response').innerHTML = 'As senhas não coincidem'
+        return showModal('As senhas não coincidem')
     }
 
     const options = {
@@ -37,6 +39,8 @@ const registerUser = async () => {
     email.value = ''
     password.value = ''
     passwordConfirm.value = ''
+
+    removeGIF(button, "Cadastrar");
 
     showModal(responseJSON.response)
 
@@ -64,7 +68,7 @@ const loginUser = async () => {
 
     const form = document.forms.login
 
-    let { email, password } = form
+    let { email, password, button } = form
 
     if(!email.value || !password.value){
         return showModal('Preencha todos os campos')
@@ -73,6 +77,8 @@ const loginUser = async () => {
     if(!passwordRules.test(password.value)) {
         return showModal('Email/Senha Incorreto(s)')
     }
+
+    addGIF(button);
 
     const options = {
         method: 'POST',
@@ -94,10 +100,14 @@ const loginUser = async () => {
     if(requestResponse.status === 401){
         email.value = ''
         password.value = ''
+        removeGIF(button, "Entrar")
         return showModal(responseJSON.response)
     }
 
+
     const tokenExpiryTime = new Date().setHours(new Date().getHours() + 2)
+
+    removeGIF(button, "Entrar")
 
     localStorage.setItem('tokenExpiryTime', tokenExpiryTime)
     localStorage.setItem('token', responseJSON.response)
@@ -106,14 +116,16 @@ const loginUser = async () => {
 
 const updateEmail = async () => {
 
-    const form = document.forms.updateEmail
+    const form = document.forms.updateEmailForm
 
-    let { email } = form
+    let { email, button } = form
 
     if(!email.value){
         email.value = ''
         return showModal('Preencha o campo de email')
     }
+
+    addGIF(button)
 
     const options = {
         method: 'POST',
@@ -133,6 +145,8 @@ const updateEmail = async () => {
     const responseJSON = await requestResponse.json()
 
     email.value = ''
+
+    removeGIF(button, "Atualizar Email")
 
     showModal(responseJSON.response)
 }
@@ -159,7 +173,7 @@ const updateUserPassword = async () => {
 
     const form = document.forms.updatePassword
 
-    let { passwordCurrent, passwordNew, passwordNewConfirm } = form
+    let { passwordCurrent, passwordNew, passwordNewConfirm, button } = form
 
     if(!passwordCurrent.value || !passwordNew.value || !passwordNewConfirm.value){
         return showModal('Preencha todos os campos')
@@ -176,6 +190,8 @@ const updateUserPassword = async () => {
     if(passwordNew.value !== passwordNewConfirm.value) {
         return showModal('As senhas não coincidem')
     }
+
+    addGIF(button)
 
     const options = {
         method: 'PATCH',
@@ -200,6 +216,8 @@ const updateUserPassword = async () => {
     passwordNew.value = ''
     passwordNewConfirm.value = ''
 
+    removeGIF(button, "Atualizar Senha")
+
     showModal(responseJSON.response)
 }
 
@@ -207,11 +225,13 @@ const recoverPassword = async () => {
 
     const form = document.forms.forgetPassword
 
-    const { email } = form
+    const { email, button } = form
 
     if(!email.value){
         return showModal('Preencha o campo de email')
     }
+
+    addGIF(button);
 
     const options = {
         method: 'POST',
@@ -230,6 +250,8 @@ const recoverPassword = async () => {
     const responseJSON = await requestResponse.json()
 
     email.value = ''
+
+    removeGIF(button, "Enviar Email");
 
     showModal(responseJSON.response)
 }
@@ -266,9 +288,6 @@ const confirmRecoverPassword = async () => {
         })
     }
 
-    console.log(location.search)
-    console.log(password.value, passwordConfirm.value)
-
     const requestResponse = await fetch(`${api}/user/password/password-recover${location.search}`, options)
     const responseJSON = await requestResponse.json()
 
@@ -284,7 +303,7 @@ const destroyUser = async () => {
 
     const form = document.forms.deleteUser
 
-    let { password, passwordConfirm } = form
+    let { password, passwordConfirm, button } = form
 
     if(!password.value || !passwordConfirm.value){
         return showModal('Preencha todos os campos')
@@ -297,6 +316,8 @@ const destroyUser = async () => {
     if(password.value !== passwordConfirm.value) {
         return showModal('As senhas não coincidem')
     }
+
+    addGIF(button);
 
     const options = {
         method: 'DELETE',
@@ -317,6 +338,7 @@ const destroyUser = async () => {
     const responseJSON = await requestResponse.json()
 
     if(requestResponse.status === 400){
+        removeGIF(button, "Excluir Conta");
         return showModal(responseJSON.response)
     }
 

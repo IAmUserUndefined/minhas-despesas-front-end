@@ -5,16 +5,16 @@
     </div>
         
     <article>
-        <form class="form-control p-3 mb-5">
+        <form class="form-control p-3 mb-5" name="updateEmailForm">
             <h2 class="h3 mb-3 text-center">Atualize Seu Email</h2>
             <div class="input-group">
 
-                <input type="email" id="email" class="form-control" placeholder="Seu Novo E-mail">
+                <input type="email" name="email" class="form-control" placeholder="Seu Novo E-mail">
 
                 <div class="input-group-append">
-                    <a class="btn btn-secondary" onclick="updateEmail()">
+                    <button class="btn btn-secondary" type="button" onclick="updateEmail()" name="button">
                         Atualizar Email
-                    </a>
+                    </button>
                 </div>
 
             </div>
@@ -30,7 +30,7 @@
             <input class="form-control mb-3" type="password" name="passwordNew" placeholder="Nova Senha">
             <input class="form-control mb-3" type="password" name="passwordNewConfirm" placeholder="Confirmação de Nova Senha">
 
-            <button type="button" class="btn btn-secondary d-block mx-auto" onclick="updateUserPassword()">
+            <button type="button" class="btn btn-secondary d-block mx-auto" onclick="updateUserPassword()" name="button">
                 Atualizar Senha
             </button>
 
@@ -45,7 +45,7 @@
             <input class="form-control mb-3" type="password" name="password" type="password" placeholder="Senha">
             <input class="form-control mb-3" type="password" name="passwordConfirm" placeholder="Confirmação de Senha">
 
-            <button type="button" class="btn btn-secondary d-block mx-auto" onclick="destroyUser()">
+            <button type="button" class="btn btn-secondary d-block mx-auto" onclick="destroyUser()" name="button">
                 Excluir Conta
             </button>
 

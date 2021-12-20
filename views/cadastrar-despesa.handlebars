@@ -5,13 +5,13 @@
     </div>
 
     <article>
-        <form class="form-control p-3">
+        <form class="form-control p-3" name="registerExpenseForm">
 
-            <input class="form-control mb-3" type="text" id="expenseName" placeholder="Nome">
-            <input class="form-control mb-3" type="date" id="dueDate" placeholder="Data de Vencimento">
-            <input class="form-control mb-3" type="number" min="1" id="price" placeholder="Preço">
+            <input class="form-control mb-3" type="text" name="expenseName" placeholder="Nome">
+            <input class="form-control mb-3" type="date" name="dueDate" placeholder="Data de Vencimento">
+            <input class="form-control mb-3" type="number" min="1" name="price" placeholder="Preço">
 
-            <button type="button" class="btn btn-secondary d-block mx-auto" onclick="registerExpense()">
+            <button type="button" class="btn btn-secondary d-block mx-auto" name="button" onclick="registerExpense()">
                 Cadastrar Despesa
             </button>
         </form>

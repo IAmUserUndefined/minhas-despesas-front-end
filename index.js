@@ -1,10 +1,10 @@
 const express = require('express')
-const expressHandlebars  = require('express-handlebars')
+const { engine }  = require('express-handlebars')
 const routes = require('./routes/routes')
 
 const app = express()
 
-app.engine('handlebars', expressHandlebars())
+app.engine('handlebars', engine())
 app.set('view engine', 'handlebars')
 
 app.use(express.static('resources'))

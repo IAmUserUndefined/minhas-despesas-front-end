@@ -38,18 +38,15 @@ const expiryToken = () => {
     }
 }
 
-const addGIF = (form) => {
-    let { button } = form
+const addGIF = (button) => {
     button.innerHTML = ''
     const img = document.createElement('img')
     img.src = 'img/loading.gif'
     img.style.width = `${25}px`
-    const containerIMG = button
-    containerIMG.append(img)
+    button.append(img)
 }
 
-const removeGIF = (form, nodeName) => {
-    let { button } = form
+const removeGIF = (button, nodeName) => {
     button.innerHTML = nodeName
 }
 

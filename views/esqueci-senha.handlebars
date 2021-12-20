@@ -1,25 +1,21 @@
 <section>
-
     <article class="container-fluid">
         <div class="row align-items-md-center" style="height: 60vh;">
             <div class="col-sm-8 mx-auto mt-5">
-                <form name="login" class="form-control p-3">
+                <form class="form-control p-3" name="forgetPassword">
 
-                    <h3 class="text-center mb-3">Login</h3>
+                    <h3 class="text-center mb-3">Esqueci Minha Senha</h3>
 
-                    <input type="text" class="form-control mb-3" placeholder="Email" name="email">
-                    <input type="password" class="form-control mb-3" placeholder="Senha" name="password">
 
-                    <button type="button" class="btn btn-secondary d-block mx-auto mb-3" onclick="loginUser()" name="button">
-                        Entrar
+                    <input class="form-control mb-3" type="email" name="email" placeholder="Seu E-mail">
+
+                    <button type="button" class="btn btn-secondary d-block mx-auto mb-3" name="button"
+                            onclick="recoverPassword()" data-bs-dismiss="modal">
+                            Enviar Email
                     </button>
 
-                    <a href="/register" class="text-center text-secondary d-block mb-3 fw-bold">
-                        Ainda não tem um cadastro?
-                    </a>
-
-                    <a href="/esqueci-senha" class="text-center text-secondary d-block fw-bold">
-                        Esqueceu sua senha?
+                    <a href="/" class="text-center text-secondary d-block mb-3 fw-bold">
+                        Lembrou sua senha?
                     </a>
                 </form>
             </div>
@@ -42,5 +38,4 @@
             </div>
         </div>
     </article>
-
 </section>
