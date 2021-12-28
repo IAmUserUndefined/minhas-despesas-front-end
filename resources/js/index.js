@@ -1,5 +1,4 @@
-const api = 'http://localhost:3333'
-// const api = 'https://api-minhas-despesas-jp-dev.herokuapp.com'
+const api = 'https://api-minhas-despesas-jp-dev.herokuapp.com'
 const appUrl = 'https://minhas-despesas-jp-dev.herokuapp.com'
 const response = document.getElementById('message')
 const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?:([0-9a-zA-Z])){8,}$/
