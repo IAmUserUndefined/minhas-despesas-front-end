@@ -1,12 +1,11 @@
 const registerUser = async () => {
 
-    const form = document.forms.register
+    const form = document.forms.registerUserForm
 
     const { email, password, passwordConfirm, button } = form
 
-    addGIF(button);
-
     if(!email.value || !password.value || !passwordConfirm.value){
+        removeGIF(button, "Cadastrar");
         return showModal('Preencha todos os campos')
     }
 
@@ -17,6 +16,8 @@ const registerUser = async () => {
     if(password.value !== passwordConfirm.value) {
         return showModal('As senhas não coincidem')
     }
+
+    addGIF(button);
 
     const options = {
         method: 'POST',
@@ -34,6 +35,13 @@ const registerUser = async () => {
     }
 
     const requestResponse = await fetch(`${api}/user/create`, options)
+                                    .catch(() => { 
+                                        removeGIF(button, "Entrar") 
+                                        showModal("Erro no servidor")
+                                        email.value = ''
+                                        password.value = ''
+                                        passwordConfirm.value = ''
+                                    })
     const responseJSON = await requestResponse.json()
 
     email.value = ''
@@ -55,6 +63,10 @@ const verifyEmail = async () => {
     }
 
     const requestResponse = await fetch(`${api}/verify-email${location.search}`, options)
+                                        .catch(() => { 
+                                        removeGIF(button, "Entrar") 
+                                        showModal("Erro no servidor")
+                                    })
     const responseJSON = await requestResponse.json()
 
     localStorage.setItem('message', responseJSON.response)
@@ -66,7 +78,7 @@ const verifyEmail = async () => {
 
 const loginUser = async () => {
 
-    const form = document.forms.login
+    const form = document.forms.loginUserForm
 
     let { email, password, button } = form
 
@@ -95,6 +107,12 @@ const loginUser = async () => {
     }
 
     const requestResponse = await fetch(`${api}/user/login`,options)
+                                    .catch(() => { 
+                                            removeGIF(button, "Entrar") 
+                                            showModal("Erro no servidor")
+                                            email.value = ''
+                                            password.value = ''
+                                        })
     const responseJSON = await requestResponse.json()
 
     if(requestResponse.status === 401){
@@ -142,6 +160,12 @@ const updateEmail = async () => {
     }
 
     const requestResponse = await fetch(`${api}/user/email/send-token-update-email`, options)
+                                        .catch(() => { 
+                                            removeGIF(button, "Entrar") 
+                                            showModal("Erro no servidor")
+                                            email.value = ''
+                                        })
+
     const responseJSON = await requestResponse.json()
 
     email.value = ''
@@ -163,6 +187,11 @@ const verifyEmailUpdate = async () => {
     }
 
     const requestResponse = await fetch(`${api}/update-email${location.search}`, options)
+                                        .catch(() => { 
+                                            removeGIF(button, "Entrar") 
+                                            showModal("Erro no servidor")
+                                        })
+
     const responseJSON = await requestResponse.json()
 
     localStorage.setItem('message', responseJSON.response)
@@ -171,7 +200,7 @@ const verifyEmailUpdate = async () => {
 
 const updateUserPassword = async () => {
 
-    const form = document.forms.updatePassword
+    const form = document.forms.updateUserPasswordForm
 
     let { passwordCurrent, passwordNew, passwordNewConfirm, button } = form
 
@@ -210,6 +239,14 @@ const updateUserPassword = async () => {
     }
 
     const requestResponse = await fetch(`${api}/user/password/update`, options)
+                                        .catch(() => { 
+                                            removeGIF(button, "Entrar") 
+                                            showModal("Erro no servidor")
+                                            passwordCurrent.value = ''
+                                            passwordNew.value = ''
+                                            passwordNewConfirm.value = ''
+                                        })
+
     const responseJSON = await requestResponse.json()
 
     passwordCurrent.value = ''
@@ -223,7 +260,7 @@ const updateUserPassword = async () => {
 
 const recoverPassword = async () => {
 
-    const form = document.forms.forgetPassword
+    const form = document.forms.recoverPasswordForm
 
     const { email, button } = form
 
@@ -247,6 +284,12 @@ const recoverPassword = async () => {
     }
 
     const requestResponse = await fetch(`${api}/user/password/send-token-password-recover`, options)
+                                        .catch(() => { 
+                                            removeGIF(button, "Entrar") 
+                                            showModal("Erro no servidor")
+                                            email.value = ''
+                                        })
+
     const responseJSON = await requestResponse.json()
 
     email.value = ''
@@ -258,9 +301,9 @@ const recoverPassword = async () => {
 
 const confirmRecoverPassword = async () => {
 
-    const form = document.forms.recoverPassword
+    const form = document.forms.confirmRecoverPasswordForm
 
-    const { password, passwordConfirm } = form
+    const { password, passwordConfirm, button } = form
 
     if(!password.value || !passwordConfirm.value){
         return showModal('Preencha todos os campos')
@@ -273,6 +316,8 @@ const confirmRecoverPassword = async () => {
     if(password.value !== passwordConfirm.value) {
         return showModal('As senhas não coincidem')
     }
+
+    addGIF(button)
 
     const options = {
         method: 'PATCH',
@@ -289,19 +334,30 @@ const confirmRecoverPassword = async () => {
     }
 
     const requestResponse = await fetch(`${api}/user/password/password-recover${location.search}`, options)
+                                        .catch(() => { 
+                                            removeGIF(button, "Entrar") 
+                                            showModal("Erro no servidor")
+                                            password.value = ""
+                                            passwordConfirm.value = ""
+                                        })
+
     const responseJSON = await requestResponse.json()
 
     if(requestResponse.status === 400){
+        password.value = ""
+        passwordConfirm.value = ""
+        removeGIF(button, "Atualizar Senha")
         return showModal(responseJSON.response)
     }
 
+    removeGIF(button, "Atualizar Senha")
     localStorage.setItem('message', responseJSON.response)
     window.location.href = '/'
 }
 
-const destroyUser = async () => {
+const deleteUser = async () => {
 
-    const form = document.forms.deleteUser
+    const form = document.forms.deleteUserForm
 
     let { password, passwordConfirm, button } = form
 
@@ -335,9 +391,18 @@ const destroyUser = async () => {
     }
 
     const requestResponse = await fetch(`${api}/user/delete`, options)
+                                        .catch(() => { 
+                                            removeGIF(button, "Entrar") 
+                                            showModal("Erro no servidor")
+                                            password.value = ""
+                                            passwordConfirm.value = ""
+                                        })
+
     const responseJSON = await requestResponse.json()
 
     if(requestResponse.status === 400){
+        password.value = ""
+        passwordConfirm.value = ""
         removeGIF(button, "Excluir Conta");
         return showModal(responseJSON.response)
     }

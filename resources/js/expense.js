@@ -1,6 +1,5 @@
 const registerExpense = async () => {
 
-
     const form = document.forms.registerExpenseForm
 
     const { expenseName, dueDate, price, button } = form
@@ -28,6 +27,14 @@ const registerExpense = async () => {
     }
 
     const requestResponse = await fetch(`${api}/expenses`, options)
+                                        .catch(() => { 
+                                            removeGIF(button, "Entrar") 
+                                            showModal("Erro no servidor, não é possível criar a despesa")
+                                            expenseName.value = ''
+                                            dueDate.value = ''
+                                            price.value = ''
+                                        })
+
     const responseJSON = await requestResponse.json()
 
     expenseName.value = ''
@@ -115,6 +122,11 @@ const readExpenses = (responseJSON) => {
                 }
             }
             const requestResponse = await fetch(`${api}/expenses/delete/${idExpense}`, options)
+                                        .catch(() => { 
+                                            removeGIF(button, "Entrar") 
+                                            showModal("Erro no servidor")
+                                        })
+
             const responseJSON = await requestResponse.json()
 
             getExpenses()
@@ -168,6 +180,10 @@ const getExpenses = async () => {
     }
 
     const requestResponse = await fetch(`${api}/expenses`, options)
+                                        .catch(() => { 
+                                            showModal("Erro no servidor, não é possível listar as despesas")
+                                        })
+
     const responseJSON = await requestResponse.json()
 
     if(responseJSON.response.length === 0){
@@ -209,6 +225,14 @@ const updateExpense = async () => {
     }
 
     await fetch(`${api}/expenses/update/${idExpense.value}`, options)
+                                        .catch(() => { 
+                                            removeGIF(button, "Entrar") 
+                                            showModal("Erro no servidor, não é possível atualizar a despesa")
+                                            expenseName.value = ''
+                                            dueDate.value = ''
+                                            price.value = ''
+                                        })
+
 
     getExpenses()
 
@@ -223,12 +247,8 @@ const expenseSearch = async () => {
     }
 
     const expenses = document.getElementById('expenses')
+    
     expenses.innerHTML = ''
-
-    const img = document.createElement('img')
-    img.src = 'img/loading.gif'
-    const containerIMG = document.getElementById('loading')
-    containerIMG.append(img)
 
     const options = {
         method: 'POST',
@@ -245,10 +265,15 @@ const expenseSearch = async () => {
     }
 
     const requestResponse = await fetch(`${api}/expenses/expenses-search`, options)
+                                        .catch(() => { 
+                                            removeGIF(button, "Entrar") 
+                                            showModal("Erro no servidor, não é possível pesquisar a despesa")
+                                            expenseSearch.value = ""
+                                        })
+
     const responseJSON = await requestResponse.json()
 
     if (responseJSON.response.length === 0) {
-        containerIMG.innerHTML = ''
         expenseSearch.value = ''
         getExpenses()
         showModal('Não existem despesas com esse nome')
@@ -261,4 +286,4 @@ const expenseSearch = async () => {
 
 }
 
-if (window.location.href.indexOf('/consultar-despesas') !== -1) getExpenses()
+if(window.location.href.indexOf('/consultar-despesas') !== -1) getExpenses()

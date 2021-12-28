@@ -1,4 +1,5 @@
-const api = 'https://api-minhas-despesas-jp-dev.herokuapp.com'
+const api = 'http://localhost:3333'
+// const api = 'https://api-minhas-despesas-jp-dev.herokuapp.com'
 const appUrl = 'https://minhas-despesas-jp-dev.herokuapp.com'
 const response = document.getElementById('message')
 const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?:([0-9a-zA-Z])){8,}$/
@@ -40,10 +41,9 @@ const expiryToken = () => {
 
 const addGIF = (button) => {
     button.innerHTML = ''
-    const img = document.createElement('img')
-    img.src = 'img/loading.gif'
-    img.style.width = `${25}px`
-    button.append(img)
+    const div = document.createElement('div')
+    div.className = 'loading'
+    button.append(div)
 }
 
 const removeGIF = (button, nodeName) => {
