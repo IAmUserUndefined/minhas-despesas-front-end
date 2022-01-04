@@ -1,9 +1,9 @@
 @keyframes loading {
-  to {
+  0% {
     transform: rotate(0);
   }
   
-  from {
+  100% {
     transform: rotate(360deg);
   }
 }
