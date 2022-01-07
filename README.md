@@ -1,6 +1,6 @@
 # Minhas Despesas - Front-end
 
-# <a href="https://minhas-despesas-jp-dev.herokuapp.com">🔗 Minhas Despesas</a>
+# 🔗 Minhas Despesas
 <p>🚀 Aplicação voltada para administração de despesas</p>
 
 # Status da Aplicação
@@ -16,3 +16,9 @@
 - Atualização de Despesas
 - Leitura de Despesas
 - Exclusão de Despesas
+
+# Tecnologias
+- React JS
+- Create React App
+- Styled Components
+- Javascript
