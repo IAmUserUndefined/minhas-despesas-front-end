@@ -5,7 +5,7 @@ import Form from "../../styles/form";
 import FormInput from "../../components/FormInput/index";
 import Button from "../../components/Button/index";
 import FormLink from "../../components/FormLink/index";
-import Logo from "../../components/Logo/index"
+import TitleForm from "../../components/FormTitle/index";
 
 import PagesContainer from "../../components/PagesContainer/index";
 
@@ -17,10 +17,9 @@ const Login = () => {
       <PagesContainer>
         <Form name="login">
           
-          <h2>
+          <TitleForm>
             Login
-            <Logo />
-          </h2>
+          </TitleForm>
 
           <FormInput type="email" name="email" placeholder="Email" />
 
