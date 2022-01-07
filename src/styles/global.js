@@ -1,7 +1,5 @@
 import { createGlobalStyle } from "styled-components";
 
-import Font from "./font";
-
 const GlobalStyle = createGlobalStyle`
 * {
 	margin: 0;
@@ -9,8 +7,7 @@ const GlobalStyle = createGlobalStyle`
 	box-sizing: border-box;
 }
 body {
-    ${Font}
-	font-family: 'Spline Sans', sans-serif;
+	font-family: monospace, Arial, sans-serif;
 }`;
 
 export default GlobalStyle;
