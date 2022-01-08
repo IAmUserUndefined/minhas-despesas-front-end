@@ -1,35 +1,44 @@
-import React from 'react';
+import React from "react";
 
 import Header from "../../components/Header/index"
 import PagesContainer from "../../components/PagesContainer/index";
 import Form from "../../styles/form";
 import TitleForm from "../../components/FormTitle/index";
 import FormInput from "../../components/FormInput/index";
-import FormLink from "../../components/FormLink/index";
 import Button from "../../components/Button/index";
 
-const ForgetPassword = () => {
+const RecoverPassword = () => {
   
     return (
       <>
         <Header />
         <PagesContainer>
-          <Form name="forgetPassword">
+          <Form name="recoverPassword">
+
             <TitleForm>
-                Esqueci Minha Senha
+                Recuperação de Senha
             </TitleForm>
+
+              <FormInput
+                  type="password"
+                  placeholder="Nova Senha"
+                  name="password"
+              />
   
-            <FormInput type="email" name="email" placeholder="Email" />
+              <FormInput
+                type="password"
+                placeholder="Confirmação de Nova Senha"
+                name="passwordConfirm"
+              />
   
             <Button>
-              Enviar
+              Atualizar Senha
             </Button>
   
-            <FormLink link="/">Lembrou sua senha?</FormLink>
           </Form>
         </PagesContainer>
       </>
     );
   };
   
-export default ForgetPassword;
+export default RecoverPassword;

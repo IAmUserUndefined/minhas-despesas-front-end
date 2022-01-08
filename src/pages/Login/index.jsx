@@ -1,13 +1,12 @@
 import React from "react";
 
 import Header from "../../components/Header/index"
-import Form from "../../styles/form";
-import FormInput from "../../components/FormInput/index";
-import Button from "../../components/Button/index";
-import FormLink from "../../components/FormLink/index";
-import TitleForm from "../../components/FormTitle/index";
-
 import PagesContainer from "../../components/PagesContainer/index";
+import Form from "../../styles/form";
+import TitleForm from "../../components/FormTitle/index";
+import FormInput from "../../components/FormInput/index";
+import FormLink from "../../components/FormLink/index";
+import Button from "../../components/Button/index";
 
 const Login = () => {
 
