@@ -5,7 +5,7 @@ const Form = styled.form`
     padding: 1rem;
     text-align: center;
 
-    > div {
+    > div, h2 {
         margin-bottom: 1.5rem;
     }
 `;

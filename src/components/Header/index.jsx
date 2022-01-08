@@ -1,12 +1,22 @@
 import React from 'react';
 
-import ContainerHeader from './styles';
+import { ContainerHeader, IconMenu } from './styles';
+
+import { useMenu } from "../../providers/MenuProvider";
 
 const Header = () => {
+
+    const { icon } = useMenu(); 
+    
     return ( 
         <>
             <ContainerHeader>
-                <h1>Minhas Despesas</h1>
+                <div>
+                    <h1>Minhas Despesas</h1>
+                </div>
+                <IconMenu>
+                    {icon}
+                </IconMenu>
             </ContainerHeader>
         </>
      );

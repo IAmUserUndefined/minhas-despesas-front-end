@@ -1,6 +1,5 @@
 import React from "react";
 
-import Header from "../../components/Header/index"
 import PagesContainer from "../../components/PagesContainer/index";
 import Form from "../../styles/form";
 import TitleForm from "../../components/FormTitle/index";
@@ -11,7 +10,6 @@ const RecoverPassword = () => {
   
     return (
       <>
-        <Header />
         <PagesContainer>
           <Form name="recoverPassword">
 
