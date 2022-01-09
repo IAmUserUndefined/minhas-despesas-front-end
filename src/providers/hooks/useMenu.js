@@ -13,7 +13,12 @@ const useMenu = () => {
         setLeft(0);
     };
 
-    return { left, icon }
+    const closeMenu = () => {
+        setIcon(<AiOutlineMenu onClick={() => showMenu()} />);
+        setLeft(`${-1000}px`);
+    }
+
+    return { left, icon, closeMenu }
 }
  
 export default useMenu;

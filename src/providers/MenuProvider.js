@@ -4,10 +4,10 @@ import hook from "./hooks/useMenu";
 const MenuContext = createContext();
 
 export const MenuProvider = ({ children }) => {
-    const { left, icon } = hook();
+    const { left, icon, closeMenu } = hook();
 
     return(
-        <MenuContext.Provider value={{ left, icon }}>
+        <MenuContext.Provider value={{ left, icon, closeMenu }}>
             {children}
         </MenuContext.Provider>
     );
