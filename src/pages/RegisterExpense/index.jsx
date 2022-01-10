@@ -15,8 +15,6 @@ const RegisterExpense = () => {
             <ContainerMain>
                 <Form name="expense">
                             
-                    <h2>Cadastrar Despesa</h2>
-
                     <FormInput type="text" placeholder="Nome" name="expenseName" />
                     <FormInput type="date" placeholder="Data de Vencimento" name="dueDate" />
                     <FormInput type="number" placeholder="Preço" min="0" name="price" />
