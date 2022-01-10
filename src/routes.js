@@ -8,6 +8,7 @@ import VerifyEmail from "./pages/VerifyEmail";
 import VerifyEmailUpdate from "./pages/VerifyEmailUpdate";
 import ConfigUser from "./pages/ConfigUser";
 import RegisterExpense from "./pages/RegisterExpense";
+import Expenses from "./pages/Expenses";
 
 export const AppRoutes = () => {
     return(
@@ -20,6 +21,7 @@ export const AppRoutes = () => {
                 <Route path="/recover-password" element={<RecoverPassword />} exact />
                 <Route path="/update-email" element={<VerifyEmailUpdate />} exact />
                 <Route path="/register-expenses" element={<RegisterExpense />} exact />
+                <Route path="/expenses" element={<Expenses />} exact />
                 <Route path="/config-user" element={<ConfigUser />} exact />
             </Routes>
         </>
