@@ -13,6 +13,7 @@ export const ModalContainer = styled.div`
     }
   }
 
+  z-index: 999;
   position: fixed;
   top: 0;
   left: 0;
@@ -46,7 +47,7 @@ export const ModalStyle = styled.div`
 
   > h3 {
     color: #000;
-    font-size: 2rem;
+    font-size: 1.9rem;
     text-align: center;
 
     @media (max-width: 576px) {
