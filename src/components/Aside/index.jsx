@@ -10,11 +10,13 @@ import { GrConfigure } from "react-icons/gr";
 import { FiLogOut } from "react-icons/fi";
 
 import { useMenu } from "../../providers/MenuProvider";
+import { useAuth } from "../../providers/AuthProvider";
 
 const Aside = () => {
     const navigate = useNavigate();
     const handleLink = (link) => navigate(link);  
     const { left, closeMenu } = useMenu();
+    const { handleLogout } = useAuth();
 
     return ( 
         <>
@@ -40,7 +42,7 @@ const Aside = () => {
                         handleLink("/config-user");
                     }}><GrConfigure /> Configurações do Usuário</li>
 
-                    <li onClick={() => handleLink("/")}><FiLogOut /> Logout</li>
+                    <li onClick={() => handleLogout()}><FiLogOut /> Logout</li>
                 </ul>
 
             </ContainerAside>

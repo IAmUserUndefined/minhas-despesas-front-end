@@ -56,7 +56,7 @@ const useAuth = () => {
         localStorage.setItem("tokenExpiryTime", new Date().setHours(new Date().getHours() + 2));
         api.defaults.headers = { "Authorization": `Bearer ${data.response}` };
         setAuthenticated(true);
-        history.push("/feed");
+        history.push("/home");
       })
       .catch(({ response }) =>
         response
