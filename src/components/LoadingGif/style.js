@@ -13,7 +13,7 @@ const LoadigGifStyle = styled.div`
     margin: 0 auto;
     border: 3px solid #fff;
     border-radius: 50%;
-    border-top-color: rgba(0,0,0,0.3);
+    border-top-color: #777;
     height: 22px;
     width: 22px;
     animation: loading 2s linear infinite;
