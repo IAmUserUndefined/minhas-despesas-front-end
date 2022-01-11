@@ -7,7 +7,7 @@ export const Table = styled.table`
     > thead tr th, tbody tr td {
         text-align: center;
         font-weight: bold;
-        padding: 5px;
+        padding: 7px;
         
         @media (max-width: 576px) {
             font-size: .7rem;
@@ -16,6 +16,10 @@ export const Table = styled.table`
 
     > thead tr th {
         border-bottom: 2px solid #000;
+    }
+
+    > tbody tr {
+        border: 2px solid #000;
     }
 
     > tbody tr:nth-child(even) {

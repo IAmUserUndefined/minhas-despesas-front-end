@@ -14,6 +14,7 @@ import ConfigUser from "./pages/ConfigUser";
 import Home from "./pages/Home";
 import RegisterExpense from "./pages/RegisterExpense";
 import Expenses from "./pages/Expenses";
+import UpdateExpense from "./pages/UpdateExpense";
 import Modal from "./pages/Modal";
 
 export const AppRoutes = () => {
@@ -51,6 +52,11 @@ export const AppRoutes = () => {
                 <Route path="/expenses" element={<PrivateRoute />} exact>
                     <Route path="/expenses" element={<Expenses />} exact />
                 </Route>
+
+                <Route path="/update-expense" element={<PrivateRoute />} exact>
+                    <Route path="/update-expense" element={<UpdateExpense />} exact />
+                </Route>
+
 
                 <Route path="/config-user" element={<PrivateRoute />} exact>
                     <Route path="/config-user" element={<ConfigUser />} exact />
