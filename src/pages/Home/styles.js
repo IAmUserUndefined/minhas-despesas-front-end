@@ -3,10 +3,10 @@ import styled from "styled-components";
 const InformationContainer = styled.div`
     margin: 0 auto;
     text-align: center;
-    padding: 3rem;
+    padding: 2rem;
     background-color: #ebecf0;
     width: 90%;
-    margin-top: 1rem;
+    margin-top: 2rem;
     border: 1px solid #000;
 
     > span {
