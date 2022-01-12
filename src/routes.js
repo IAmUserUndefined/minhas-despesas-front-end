@@ -15,6 +15,7 @@ import Home from "./pages/Home";
 import RegisterExpense from "./pages/RegisterExpense";
 import Expenses from "./pages/Expenses";
 import UpdateExpense from "./pages/UpdateExpense";
+import PageNotFound from "./pages/PageNotFound";
 import Modal from "./pages/Modal";
 
 export const AppRoutes = () => {
@@ -65,6 +66,8 @@ export const AppRoutes = () => {
                 <Route path="/update-email" element={<PrivateRoute />} exact>
                     <Route path="/update-email" element={<VerifyEmailUpdate/>} exact />
                 </Route>
+
+                <Route path="/*" element={<PageNotFound/>} />
             </Routes>
         </>
      );
