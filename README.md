@@ -1,6 +1,6 @@
 # Minhas Despesas - Front-end
 
-# <a href="https://minhas-despesas-jp-dev.herokuapp.com/">🔗 Minhas Despesas</a>
+# <a href="https://minhasdespesasjpdev.herokuapp.com/">🔗 Minhas Despesas</a>
 <p>🚀 Aplicação voltada para administração de despesas</p>
 
 # Status da Aplicação
