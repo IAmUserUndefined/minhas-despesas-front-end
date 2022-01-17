@@ -47,7 +47,7 @@ export const ModalStyle = styled.div`
 
   > h3 {
     color: #000;
-    font-size: 1.9rem;
+    font-size: 1.6rem;
     text-align: center;
 
     @media (max-width: 576px) {
