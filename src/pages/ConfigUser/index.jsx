@@ -17,219 +17,189 @@ import { useModal } from "../../providers/ModalProvider";
 import { useAuth } from "../../providers/AuthProvider";
 
 const ConfigUser = () => {
-    const { handleShowModal } = useModal();
-    const { handleLogout } = useAuth();
-    const [buttonChidrenEmail, setButtonChildrenEmail] = useState("Atualizar Email");
-    const [buttonChidrenPassword, setButtonChildrenPassword] = useState("Atualizar Senha");
-    const [buttonChidrenDelete, setButtonChildrenDelete] = useState("Excluir Usuário");
+  const { handleShowModal } = useModal();
+  const { handleLogout } = useAuth();
+  const [formValues, setFormValues] = useState({});
+  const [buttonChidrenEmail, setButtonChildrenEmail] = useState("Atualizar Email");
+  const [buttonChidrenPassword, setButtonChildrenPassword] = useState("Atualizar Senha");
+  const [buttonChidrenDelete, setButtonChildrenDelete] = useState("Excluir Usuário");
 
-    const handleUpdateEmail = async () => {
-        setButtonChildrenEmail(<LoadingGif />);
-    
-        const form = document.forms.updateEmail;
-    
-        let { email } = form;
-    
-        if (!email.value) {
-          setButtonChildrenEmail("Atualizar Email");
-          return handleShowModal("Preencha o campo de email");
-        }
-    
-        if (!isEmailValid(email.value)) {
-          setButtonChildrenEmail("Atualizar Email");
-          email.value = "";
-          return handleShowModal("Coloque um email válido");
-        }
-    
-        await api
-          .post("/user/email/send-token-update-email", {
-            email: email.value,
-          })
-          .then(({ data }) => {
-            handleShowModal(data.response);
-          })
-          .catch(({ response }) =>
-            response
-              ? handleShowModal(response.data.response)
-              : handleShowModal("Erro no Servidor")
-          );
-    
-        email.value = "";
-    
-        setButtonChildrenEmail("Atualizar Email");
-    };
-    
-    const handleUpdatePassword = async () => {
-        setButtonChildrenPassword(<LoadingGif />);
-    
-        const form = document.forms.updatePassword;
-    
-        let { passwordCurrent, newPassword, newPasswordConfirm } = form;
-    
-        if (
-          !passwordCurrent.value ||
-          !newPassword.value ||
-          !newPasswordConfirm.value
-        ) {
-          setButtonChildrenPassword("Atualizar Senha");
-          return handleShowModal("Preencha todos os campos");
-        }
-    
-        if (!isPasswordValid(passwordCurrent.value)) {
-          setButtonChildrenPassword("Atualizar Senha");
-          passwordCurrent.value = "";
-          newPassword.value = "";
-          newPasswordConfirm = "";
-          return handleShowModal("Senha atual incorreta");
-        }
-    
-        const { result, message } = isPasswordValid(newPassword.value);
-    
-        if (!result) {
-          setButtonChildrenPassword("Atualizar Senha");
-          return handleShowModal(message);
-        }
-    
-        if (newPassword.value !== newPasswordConfirm.value) {
-          passwordCurrent.value = "";
-          newPassword.value = "";
-          newPasswordConfirm = "";
-          return handleShowModal("As senhas não coincidem");
-        }
-    
-        await api
-          .patch(`/user/password/update`, {
-            passwordCurrent: passwordCurrent.value,
-            newPassword: newPassword.value,
-            newPasswordConfirm: newPasswordConfirm.value,
-          })
-          .then(({ data }) => {
-            handleShowModal(data.response);
-          })
-          .catch(({ response }) =>
-            response
-              ? handleShowModal(response.data.response)
-              : handleShowModal("Erro no Servidor")
-          );
-    
-        passwordCurrent.value = "";
-        newPassword.value = "";
-        newPasswordConfirm.value = "";
-    
-        setButtonChildrenPassword("Atualizar Senha");
-    };
-    
-     const handleDeleteUser = async () => {
-        setButtonChildrenDelete(<LoadingGif />);
-    
-        const form = document.forms.deleteUser;
-    
-        let { password, passwordConfirm } = form;
-    
-        if (!password.value || !passwordConfirm.value) {
-          setButtonChildrenDelete("Excluir Usuário");
-          return handleShowModal("Preencha todos os campos");
-        }
-    
-        const { result } = isPasswordValid(password.value);
-    
-        if (!result) {
-          setButtonChildrenDelete("Excluir Usuário");
-          password.value = "";
-          passwordConfirm.value = "";
-          return handleShowModal("Senha incorreta");
-        }
-    
-        if (password.value !== passwordConfirm.value) {
-          setButtonChildrenDelete("Excluir Usuário");
-          password.value = "";
-          passwordConfirm.value = "";
-          return handleShowModal("As senhas não coincidem");
-        }
-    
-        await api
-          .delete(`/user/delete`, {
-            data: {
-              password: password.value,
-              passwordConfirm: passwordConfirm.value,
-            },
-          })
-          .then(({ data }) => {
-            handleLogout();
-            handleShowModal(data.response);
-          })
-          .catch(({ response }) =>
-            response
-              ? handleShowModal(response.data.response)
-              : handleShowModal("Erro no Servidor")
-          );
-    
-        password.value = "";
-        passwordConfirm.value = "";
-    
-        setButtonChildrenDelete("Excluir Usuário");
-    };
-    
+  const handleUpdateEmail = async (e) => {
+    e.preventDefault();
 
-    return ( 
-        <>
-            <Header />
-            <Aside />
-            <ContainerMain>
-                    <Form name="updateEmail">
-                            
-                        <h2>Atualizar Email</h2>
+    const { email } = e.target;
 
-                        <FormInput type="email" placeholder="Email" name="email" />
+    if (!email.value) return handleShowModal("Preencha o campo de email");
 
-                        <Button onClick={() => handleUpdateEmail()}>{buttonChidrenEmail}</Button>
+    if (!isEmailValid(email.value))
+      return handleShowModal("Coloque um email válido");
 
-                    </Form>
+    setButtonChildrenEmail(<LoadingGif />);
 
-                    <Form name="updatePassword">
-                        <h2>Atualizar Senha</h2>
+    await api
+      .post("/user/email/send-token-update-email", {
+        email: email.value,
+      })
+      .then(({ data }) => {
+        setFormValues({});
+        handleShowModal(data.response);
+      })
+      .catch(({ response }) =>
+        response
+          ? handleShowModal(response.data.response)
+          : handleShowModal("Erro no Servidor")
+      );
 
-                        <FormInput
-                            type="password"
-                            placeholder="Senha Atual"
-                            name="passwordCurrent"
-                        />
+    setButtonChildrenEmail("Atualizar Email");
+  };
 
-                        <FormInput
-                            type="password"
-                            placeholder="Nova Senha"
-                            name="newPassword"
-                        />
+  const handleUpdatePassword = async (e) => {
+    e.preventDefault();
 
-                        <FormInput
-                            type="password"
-                            placeholder="Confirmação de Nova Senha"
-                            name="newPasswordConfirm"
-                        />
+    const { passwordCurrent, newPassword, newPasswordConfirm } = e.target;
 
-                        <Button onClick={() => handleUpdatePassword()}>{buttonChidrenPassword}</Button>
-                    </Form>
+    if (
+      !passwordCurrent.value ||
+      !newPassword.value ||
+      !newPasswordConfirm.value
+    )
+      return handleShowModal("Preencha todos os campos");
 
-                    <Form name="deleteUser">
-                        <h2>Excluir Usuário</h2>
+    if (!isPasswordValid(passwordCurrent.value))
+      return handleShowModal("Senha atual incorreta");
 
-                        <FormInput 
-                            type="password" 
-                            placeholder="Senha" 
-                            name="password" 
-                        
-                        />
-                        <FormInput
-                            type="password"
-                            placeholder="Confirmação de Senha"
-                            name="passwordConfirm"
-                        />
+    const { result, message } = isPasswordValid(newPassword.value);
 
-                        <Button onClick={() => handleDeleteUser()}>{buttonChidrenDelete}</Button>
-                    </Form>
-            </ContainerMain>
-        </>
-     );
-}
- 
+    if (!result) return handleShowModal(message);
+
+    if (newPassword.value !== newPasswordConfirm.value)
+      return handleShowModal("As senhas não coincidem");
+
+    setButtonChildrenPassword(<LoadingGif />);
+
+    await api
+      .patch(`/user/password/update`, {
+        passwordCurrent: passwordCurrent.value,
+        newPassword: newPassword.value,
+        newPasswordConfirm: newPasswordConfirm.value,
+      })
+      .then(({ data }) => {
+        setFormValues({});
+        handleShowModal(data.response);
+      })
+      .catch(({ response }) =>
+        response
+          ? handleShowModal(response.data.response)
+          : handleShowModal("Erro no Servidor")
+      );
+
+    setButtonChildrenPassword("Atualizar Senha");
+  };
+
+  const handleDeleteUser = async (e) => {
+    e.preventDefault();
+
+    const { password, passwordConfirm } = e.target;
+
+    if (!password.value || !passwordConfirm.value)
+      return handleShowModal("Preencha todos os campos");
+
+    const { result } = isPasswordValid(password.value);
+
+    if (!result) return handleShowModal("Senha incorreta");
+
+    if (password.value !== passwordConfirm.value)
+      return handleShowModal("As senhas não coincidem");
+
+    setButtonChildrenDelete(<LoadingGif />);
+
+    await api
+      .delete(`/user/delete`, {
+        data: {
+          password: password.value,
+          passwordConfirm: passwordConfirm.value,
+        },
+      })
+      .then(({ data }) => {
+        setFormValues({});
+        handleLogout();
+        handleShowModal(data.response);
+      })
+      .catch(({ response }) =>
+        response
+          ? handleShowModal(response.data.response)
+          : handleShowModal("Erro no Servidor")
+      );
+
+    setButtonChildrenDelete("Excluir Usuário");
+  };
+
+  return (
+    <>
+      <Header />
+      <Aside />
+      <ContainerMain>
+        <Form onSubmit={handleUpdateEmail}>
+          <h2>Atualizar Email</h2>
+
+          <FormInput type="email" placeholder="Email" name="email" formValues={formValues} setFormValues={setFormValues}/>
+
+          <Button type="submit">{buttonChidrenEmail}</Button>
+        </Form>
+
+        <Form onSubmit={handleUpdatePassword}>
+          <h2>Atualizar Senha</h2>
+
+          <FormInput
+            type="password"
+            placeholder="Senha Atual"
+            name="passwordCurrent"
+            formValues={formValues}
+            setFormValues={setFormValues}
+          />
+
+          <FormInput
+            type="password"
+            placeholder="Nova Senha"
+            name="newPassword"
+            formValues={formValues}
+            setFormValues={setFormValues}
+          />
+
+          <FormInput
+            type="password"
+            placeholder="Confirmação de Nova Senha"
+            name="newPasswordConfirm"
+            formValues={formValues}
+            setFormValues={setFormValues}
+          />
+
+            <Button type="submit">{buttonChidrenPassword}</Button>
+        </Form>
+
+        <Form onSubmit={handleDeleteUser}>
+          <h2>Excluir Usuário</h2>
+
+          <FormInput 
+            type="password" 
+            placeholder="Senha" 
+            name="password" 
+            formValues={formValues}
+            setFormValues={setFormValues}
+          />
+          <FormInput
+            type="password"
+            placeholder="Confirmação de Senha"
+            name="passwordConfirm"
+            formValues={formValues}
+            setFormValues={setFormValues}
+          />
+
+            <Button type="submit">{buttonChidrenDelete}</Button>
+        </Form>
+      </ContainerMain>
+    </>
+  );
+};
+
 export default ConfigUser;

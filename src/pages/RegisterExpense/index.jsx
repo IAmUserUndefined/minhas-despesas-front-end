@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 import Header from "../../components/Header";
 import Aside from "../../components/Aside";
@@ -13,63 +13,75 @@ import api from "../../services/api";
 import { useModal } from "../../providers/ModalProvider";
 
 const RegisterExpense = () => {
-    const { handleShowModal } = useModal();
-    const [buttonChildren, setButtonChildren] = useState("Cadastrar Despesa");
-  
-    const handleRegisterExpense = async () => {
-      setButtonChildren(<LoadingGif />);
-  
-      const form = document.forms.expense;
-  
-      let { expenseName, dueDate, price } = form;
-  
-      if (!expenseName.value || !dueDate.value || !price.value) {
-        setButtonChildren("Cadastrar Despesa");
-        return handleShowModal("Preencha todos os campos");
-      }
-  
-      await api
-        .post("/expenses", {
-          expenseName: expenseName.value,
-          dueDate: dueDate.value,
-          price: price.value,
-        })
-        .then(({ data }) => {
-          expenseName.value = "";
-          dueDate.value = "";
-          price.value = "";
-          handleShowModal(data.response);
-        })
-        .catch(({ response }) =>
-          response
-            ? handleShowModal(response.data.response)
-            : handleShowModal("Erro no Servidor")
-        );
-  
-      expenseName.value = "";
-      dueDate.value = "";
-      price.value = "";
-  
-      setButtonChildren("Cadastrar Despesa");
-    };
+  const { handleShowModal } = useModal();
+  const [formValues, setFormValues] = useState({});
+  const [buttonChildren, setButtonChildren] = useState("Cadastrar Despesa");
 
-    return ( 
-        <>
-            <Header />
-            <Aside />
-            <ContainerMain>
-                <Form name="expense">
-                            
-                    <FormInput type="text" placeholder="Nome" name="expenseName" />
-                    <FormInput type="date" placeholder="Data de Vencimento" name="dueDate" />
-                    <FormInput type="number" placeholder="Preço" min="0" name="price" />
+  const handleRegisterExpense = async (e) => {
+    e.preventDefault();
+    
+    const { expenseName, dueDate, price } = e.target;
 
-                    <Button onClick={() => handleRegisterExpense()}>{buttonChildren}</Button>
+    if (!expenseName.value || !dueDate.value || !price.value)
+      return handleShowModal("Preencha todos os campos");
 
-                </Form>
-            </ContainerMain>
-        </>
-     );
-}
- 
+    setButtonChildren(<LoadingGif />);
+
+    await api
+      .post("/expenses", {
+        expenseName: expenseName.value,
+        dueDate: dueDate.value,
+        price: price.value,
+      })
+      .then(({ data }) => {
+        setFormValues({});
+        handleShowModal(data.response);
+      })
+      .catch(({ response }) =>
+        response
+          ? handleShowModal(response.data.response)
+          : handleShowModal("Erro no Servidor")
+      );
+
+    setButtonChildren("Cadastrar Despesa");
+  };
+
+  return (
+    <>
+      <Header />
+      <Aside />
+      <ContainerMain>
+        <Form onSubmit={handleRegisterExpense}>
+          <FormInput
+            type="text"
+            placeholder="Nome"
+            name="expenseName"
+            formValues={formValues}
+            setFormValues={setFormValues}
+          />
+          <FormInput
+            type="date"
+            placeholder="Data de Vencimento"
+            name="dueDate"
+            formValues={formValues}
+            setFormValues={setFormValues}
+          />
+          <FormInput 
+            type="number" 
+            placeholder="Preço" 
+            min="0" 
+            name="price" 
+            formValues={formValues}
+            setFormValues={setFormValues}
+          />
+
+          <Button type="submit">
+            {buttonChildren}
+          </Button>
+        </Form>
+      </ContainerMain>
+    </>
+  );
+};
+
 export default RegisterExpense;

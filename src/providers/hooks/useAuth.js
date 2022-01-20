@@ -16,71 +16,11 @@ const useAuth = () => {
   const [loading, setLoading] = useState(true);
   const [buttonChildren, setButtonChildren] = useState("Login");
   const { handleShowModal } = useModal();
-
-  const handleLogin = async () => {
-    setButtonChildren(<LoadingGif />);
-
-    const form = document.forms.login;
-
-    let { email, password } = form;
-
-    if (!email.value || !password.value) {
-      setButtonChildren("Login");
-      return handleShowModal("Preencha todos os campos");
-    }
-
-    if (!isEmailValid(email.value)) {
-      email.value = "";
-      password.value = "";
-      setButtonChildren("Login");
-      return handleShowModal("Email/Senha Incorreto(s)");
-    }
-
-    const { result } = isPasswordValid(password.value);
-
-    if (!result) {
-      email.value = "";
-      password.value = "";
-      setButtonChildren("Login");
-      return handleShowModal("Email/Senha Incorreto(s)");
-    }
-
-    await api
-      .post("/user/login", {
-        email: email.value,
-        password: password.value,
-      })
-      .then(({ data }) => {
-        setButtonChildren("Login");
-        localStorage.setItem("token", data.response);
-        localStorage.setItem("tokenExpiryTime", new Date().setHours(new Date().getHours() + 2));
-        api.defaults.headers = { "Authorization": `Bearer ${data.response}` };
-        setAuthenticated(true);
-        history.push("/home");
-      })
-      .catch(({ response }) =>
-        response
-          ? handleShowModal(response.data.response)
-          : handleShowModal("Erro no Servidor")
-      );
-
-      email.value = "";
-      password.value = "";
-
-      setButtonChildren("Login");
-  };
-
-  const handleLogout = () => {
-    setAuthenticated(false);
-    localStorage.removeItem("token");
-    localStorage.removeItem("tokenExpiryTime");
-    api.defaults.headers = { "Authorization": undefined };
-    history.push("/");
-  };
+  const [formValues, setFormValues] = useState({});
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const tokenExpirytime = localStorage.getItem("tokenExpiryTime");
+    const token = localStorage.getItem("tokenMinhasDespesas");
+    const tokenExpirytime = localStorage.getItem("tokenExpiryTimeMinhasDespesas");
 
     if (token) {
 
@@ -95,7 +35,59 @@ const useAuth = () => {
     setLoading(false);
   }, []);
 
-  return { handleLogin, handleLogout, authenticated, loading, expirySession, setExpirySession, buttonChildren };
+  const handleLogin = async (e) => {
+
+    e.preventDefault();
+
+    const { email, password } = e.target;
+
+    if (!email.value || !password.value)
+      return handleShowModal("Preencha todos os campos");
+
+    if (!isEmailValid(email.value))
+      return handleShowModal("Email/Senha Incorreto(s)");
+
+    const { result } = isPasswordValid(password.value);
+
+    if (!result) 
+      return handleShowModal("Email/Senha Incorreto(s)");
+
+    setButtonChildren(<LoadingGif />);
+
+    await api
+      .post("/user/login", {
+        email: email.value,
+        password: password.value,
+      })
+      .then(({ data }) => {
+        setFormValues({});
+        setButtonChildren("Login");
+        localStorage.setItem("tokenMinhasDespesas", data.response);
+        localStorage.setItem("tokenExpiryTimeMinhasDespesas", new Date().setHours(new Date().getHours() + 2));
+        api.defaults.headers = { "Authorization": `Bearer ${data.response}` };
+        setAuthenticated(true);
+        history.push("/tasks");
+      })
+      .catch(({ response }) =>
+        response
+          ? handleShowModal(response.data.response)
+          : handleShowModal("Erro no Servidor, tente novamente mais tarde")
+      );
+
+      setButtonChildren("Login");
+  };
+
+  const handleLogout = () => {
+    setAuthenticated(false);
+    localStorage.removeItem("tokenMinhasDespesas");
+    localStorage.removeItem("tokenExpiryTimeMinhasDespesas");
+    api.defaults.headers = { "Authorization": undefined };
+    history.push("/");
+  };
+
+  return { 
+    handleLogin, handleLogout, authenticated, loading, expirySession, setExpirySession, buttonChildren, formValues, setFormValues 
+  };
 };
 
 export default useAuth;

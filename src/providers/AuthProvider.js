@@ -12,6 +12,8 @@ export const AuthProvider = ({ children }) => {
     expirySession,
     setExpirySession,
     buttonChildren,
+    formValues, 
+    setFormValues
   } = hook();
 
   return (
@@ -24,6 +26,8 @@ export const AuthProvider = ({ children }) => {
         expirySession,
         setExpirySession,
         buttonChildren,
+        formValues, 
+        setFormValues
       }}
     >
       {children}

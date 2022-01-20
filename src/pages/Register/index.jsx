@@ -16,41 +16,29 @@ import isPasswordValid from "../../utils/isPasswordValid";
 import { useModal } from "../../providers/ModalProvider";
 
 const Register = () => {
-
   const { handleShowModal } = useModal();
+  const [formValues, setFormValues] = useState({});
   const [buttonChildren, setButtonChildren] = useState("Cadastrar");
 
-  const handleRegister = async () => {
-    setButtonChildren(<LoadingGif />);
+  const handleRegister = async (e) => {
+    e.preventDefault();
 
-    const form = document.forms.register;
+    const { email, password, passwordConfirm } = e.target;
 
-    let { email, name, password, passwordConfirm } = form;
-
-    if (!email.value || !name || !password.value || !passwordConfirm.value) {
-      setButtonChildren("Cadastrar");
+    if (!email.value || !password.value || !passwordConfirm.value)
       return handleShowModal("Preencha todos os campos");
-    }
 
-    if (!isEmailValid(email.value)) {
-      setButtonChildren("Cadastrar");
-      email.value = "";
+    if (!isEmailValid(email.value))
       return handleShowModal("Coloque um email válido");
-    }
 
     const { result, message } = isPasswordValid(password.value);
 
-    if (!result) {
-      setButtonChildren("Cadastrar");
-      return handleShowModal(message);
-    }
+    if (!result) return handleShowModal(message);
 
-    if (password.value !== passwordConfirm.value) {
-      setButtonChildren("Cadastrar");
-      password.value = "";
-      passwordConfirm.value = "";
+    if (password.value !== passwordConfirm.value)
       return handleShowModal("As senhas não coincidem");
-    }
+
+    setButtonChildren(<LoadingGif />);
 
     await api
       .post("/user/create", {
@@ -59,9 +47,7 @@ const Register = () => {
         passwordConfirm: passwordConfirm.value,
       })
       .then(({ data }) => {
-        email.value = "";
-        password.value = "";
-        passwordConfirm.value = "";
+        setFormValues({});
         handleShowModal(data.response);
       })
       .catch(({ response }) =>
@@ -70,35 +56,44 @@ const Register = () => {
           : handleShowModal("Erro no Servidor")
       );
 
-    email.value = "";
-    password.value = "";
-    passwordConfirm.value = "";
-
     setButtonChildren("Cadastrar");
   };
-  
-    return (
-      <>
-        <PagesContainer>
-          <Form name="register">
-            
-            <TitleForm>
-              Cadastro
-            </TitleForm>
 
-            <FormInput type="email" name="email" placeholder="Email" />
-            <FormInput type="password" name="password" placeholder="Senha" />
-            <FormInput type="password" name="passwordConfirm" placeholder="Confirmação de Senha" />
-  
-            <Button onClick={() => handleRegister()}>
-              {buttonChildren}
-            </Button>
-  
-            <FormLink link="/">Já tem um cadastro?</FormLink>
-          </Form>
-        </PagesContainer>
-      </>
-    );
-  };
-  
+  return (
+    <>
+      <PagesContainer>
+        <Form onSubmit={handleRegister}>
+          <TitleForm>Cadastro</TitleForm>
+
+          <FormInput 
+            type="email" 
+            name="email" 
+            placeholder="Email" 
+            formValues={formValues}
+            setFormValues={setFormValues}
+          />
+          <FormInput 
+            type="password" 
+            name="password"
+            placeholder="Senha" 
+            formValues={formValues}
+            setFormValues={setFormValues}
+          />
+          <FormInput
+            type="password"
+            name="passwordConfirm"
+            placeholder="Confirmação de Senha"
+            formValues={formValues}
+            setFormValues={setFormValues}
+          />
+
+          <Button type="submit">{buttonChildren}</Button>
+
+          <FormLink link="/">Já tem um cadastro?</FormLink>
+        </Form>
+      </PagesContainer>
+    </>
+  );
+};
+
 export default Register;

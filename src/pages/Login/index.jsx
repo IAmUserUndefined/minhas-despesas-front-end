@@ -11,22 +11,22 @@ import { useAuth } from "../../providers/AuthProvider";
 
 const Login = () => {
 
-  const { handleLogin, buttonChildren } = useAuth();
+  const { handleLogin, buttonChildren, formValues, setFormValues } = useAuth();
 
   return (
     <>
       <PagesContainer>
-        <Form name="login">
+        <Form onSubmit={handleLogin}>
           
           <TitleForm>
             Login
           </TitleForm>
 
-          <FormInput type="email" name="email" placeholder="Email" />
+          <FormInput type="email" name="email" placeholder="Email" formValues={formValues} setFormValues={setFormValues} />
 
-          <FormInput type="password" name="password" placeholder="Senha" />
+          <FormInput type="password" name="password" placeholder="Senha" formValues={formValues} setFormValues={setFormValues} />
 
-          <Button onClick={() => handleLogin()}>
+          <Button type="submit">
             {buttonChildren}
           </Button>
 

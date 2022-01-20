@@ -17,24 +17,24 @@ const UpdateExpense = () => {
   const { handleShowModal } = useModal();
   const { search } = useLocation();
   const query = new URLSearchParams(search);
+  const [formValues, setFormValues] = useState({
+    expenseName: query.get("expenseName"),
+    dueDate: query.get("dueDate"),
+    price: query.get("price")
+  });
   const [buttonChildren, setButtonChildren] = useState("Atualizar Despesa");
-  const [expenseName, setExpenseName] = useState(query.get("expenseName"));
-  const [dueDate, setDueDate] = useState(query.get("dueDate"));
-  const [price, setPrice] = useState(query.get("price"));
   const navigate = useNavigate();
   const handleLink = () => navigate("/expenses");
 
-  const handleUpdateExpense = async () => {
-    setButtonChildren(<LoadingGif />);
+  const handleUpdateExpense = async (e) => {
+    e.preventDefault();
+    
+    const { expenseName, dueDate, price } = e.target;
 
-    const form = document.forms.expense;
-
-    let { expenseName, dueDate, price } = form;
-
-    if (!expenseName.value || !dueDate.value || !price.value) {
-      setButtonChildren("Atualizar Despesa");
+    if (!expenseName.value || !dueDate.value || !price.value)
       return handleShowModal("Preencha todos os campos");
-    }
+
+    setButtonChildren(<LoadingGif />);
 
     await api
       .put(`/expenses/update/${query.get("id")}`, {
@@ -43,9 +43,7 @@ const UpdateExpense = () => {
         price: price.value,
       })
       .then(({ data }) => {
-        expenseName.value = "";
-        dueDate.value = "";
-        price.value = "";
+        setFormValues({});
         handleShowModal(data.response);
       })
       .catch(({ response }) =>
@@ -54,25 +52,9 @@ const UpdateExpense = () => {
           : handleShowModal("Erro no Servidor")
       );
 
-    expenseName.value = "";
-    dueDate.value = "";
-    price.value = "";
-
     setButtonChildren("Atualizar Despesa");
 
     handleLink();
-  };
-
-  const handleInputExpenseName = (e) => {
-    setExpenseName(e.target.value);
-  };
-
-  const handleInputDueDate = (e) => {
-    setDueDate(e.target.value);
-  };
-
-  const handleInputPrice = (e) => {
-    setPrice(e.target.value);
   };
 
   return (
@@ -80,22 +62,22 @@ const UpdateExpense = () => {
       <Header />
       <Aside />
       <ContainerMain>
-        <Form name="expense">
+        <Form onSubmit={handleUpdateExpense}>
 
           <FormInput
             type="text"
             placeholder="Nome"
             name="expenseName"
-            value={expenseName}
-            onChange={handleInputExpenseName}
+            formValues={formValues}
+            setFormValues={setFormValues}
           />
 
           <FormInput
             type="date"
             placeholder="Data de Vencimento"
             name="dueDate"
-            value={dueDate}
-            onChange={handleInputDueDate}
+            formValues={formValues}
+            setFormValues={setFormValues}
           />
           
           <FormInput
@@ -103,11 +85,11 @@ const UpdateExpense = () => {
             placeholder="Preço"
             min="0"
             name="price"
-            value={price}
-            onChange={handleInputPrice}
+            formValues={formValues}
+            setFormValues={setFormValues}
           />
 
-          <Button onClick={() => handleUpdateExpense()}>
+          <Button type="submit">
             {buttonChildren}
           </Button>
         </Form>

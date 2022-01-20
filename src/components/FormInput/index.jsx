@@ -2,14 +2,27 @@ import React from 'react';
 
 import FormInputStyle from './styles';
 
-const FormInput = ( { type, name, placeholder, value, onChange } ) => {
-    return ( 
-        <>
-            <div>
-                <FormInputStyle type={type} name={name} placeholder={placeholder} value={value} onChange={onChange} />
-            </div>
-        </>
-     );
-}
- 
-export default FormInput;
+const FormInput = ({ formValues, setFormValues, type, placeholder, name }) => {
+
+    const handleInputChange = (e) => {
+      const { name, value } = e.target;
+      setFormValues({ ...formValues, [name]: value });
+    };
+  
+    return (
+      <>
+        <div>
+          <FormInputStyle 
+            type={type}
+            placeholder={placeholder} 
+            name={name} 
+            onChange={handleInputChange} 
+            value={formValues[name] || ""}
+            required
+          />
+        </div>
+      </>
+    );
+  };
+  
+  export default FormInput;
