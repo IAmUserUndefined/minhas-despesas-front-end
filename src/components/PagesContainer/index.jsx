@@ -2,6 +2,8 @@ import React from 'react';
 
 import PagesContainerStyle from './styles';
 
+import BannerImage from "../../assets/images/banner.svg";
+
 const PagesContainer = ( { children } ) => {
     return ( 
         <>
@@ -11,7 +13,7 @@ const PagesContainer = ( { children } ) => {
                 </div>
 
                 <div>
-                    <img src="images/banner.svg" alt="Ilustração de uma pessoa com um sorvete gigante na palma da mão" />
+                    <img src={BannerImage} alt="Ilustração de uma mão com um saco de dinheiro" />
                 </div>
             </PagesContainerStyle>
         </>
