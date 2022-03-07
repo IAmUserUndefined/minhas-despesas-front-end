@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
 import React, { useState, useEffect } from 'react';
-import nookies from "nookies";
 
 import Header from "../components/Header";
 import Aside from "../components/Aside";
@@ -67,8 +66,10 @@ const Home = ({ data }) => {
  
 export const getServerSideProps = async (context) => {
 
-    if(auth(context).redirect)
-        return auth(context);
+    const { redirect } = auth(context);
+
+    if(redirect)
+        return redirect;
 
     const fetch = await api(context)
                     .get("/expenses")

@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import nookies from "nookies";
 
 import Header from "../components/Header";
 import Aside from "../components/Aside";
@@ -10,20 +9,31 @@ import ContainerMain from "../components/ContainerMain";
 
 import { Table, UpdateButton, DeleteButton } from "../styles/pages/expenses";
 
-import api from "../services/api/serverApi";
+import api from "../services/api/clientApi";
 
 import { useModal } from "../providers/ModalProvider";
 
 import auth from "../services/auth";
 
-const Expenses = ({ data }) => {
+const Expenses = () => {
     const { handleShowModal } = useModal();
     const [expenses, setExpenses] = useState([]);
     const router = useRouter();
 
     useEffect(() => {
         let mounted = true;
-        setExpenses(data);
+    
+        const fetchExpenses = async () => {
+          await api
+            .get("/expenses")
+            .then(({ data }) => (mounted ? setExpenses(data.response) : null))
+            .catch(({ response }) =>
+              response === undefined ? handleShowModal("Erro no servidor, as despesas não pode ser apresentadas") : null
+            );
+        };
+    
+        fetchExpenses();
+    
         return () => mounted = false;
     }, [expenses]);
 
@@ -77,26 +87,6 @@ const Expenses = ({ data }) => {
      );
 }
 
-export const getServerSideProps = async (context) => {
-  
-  if(auth(context).redirect)
-    return auth(context);
-
-  const fetch = await api(context)
-                  .get("/expenses")
-                  .then(({ data }) => data)
-                  .catch(({ response }) =>
-                      response === undefined 
-                          ? "Erro no servidor, as informações não podem ser apresentadas" : response
-                  );
-
-  const data = await fetch.response;
-
-  return {
-        props: {
-            data
-        }
-    }
-}
+export const getServerSideProps = async (context) => auth(context);
 
 export default Expenses;
