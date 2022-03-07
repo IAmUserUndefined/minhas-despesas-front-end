@@ -1,15 +1,14 @@
 import React from 'react';
 
 import FormTitleContainer from './styles';
-
-import LogoImage from "../../assets/images/logo.svg";
+import Image from 'next/image';
 
 const FormTitle = ( { children } ) => {
     return ( 
         <>
             <FormTitleContainer>
                 <h2>{children}</h2>
-                <img src={LogoImage} alt="Saco de Dinheiro" style={ { width: "70px" } } />
+                <Image src="/images/logo.svg" alt="Saco de Dinheiro" width={70} height={70} />
             </FormTitleContainer>
         </>
      );

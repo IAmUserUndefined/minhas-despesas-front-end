@@ -1,12 +1,16 @@
 import styled from "styled-components";
 
-const FormLinkStyle = styled.a`
-    font-weight: bold;
-    font-size: 1.2rem;
-    cursor: pointer;
+const FormLinkStyle = styled.div`
+    > a {
+        font-weight: bold;
+        font-size: 1.2rem;
+        cursor: pointer;
+        color: #000;
+        text-decoration: none;
 
-    &:hover {
-        text-decoration: underline;
+        &:hover {
+            text-decoration: underline;
+        }
     }
 `;
 

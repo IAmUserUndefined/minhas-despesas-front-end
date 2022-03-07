@@ -1,26 +1,28 @@
 import React, { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useRouter } from "next/router";
 
-import PagesContainer from "../../components/PagesContainer/index";
-import Form from "../../styles/form";
-import TitleForm from "../../components/FormTitle/index";
-import FormInput from "../../components/FormInput/index";
-import Button from "../../components/Button/index";
-import LoadingGif from "../../components/LoadingGif/index";
+import PagesContainer from "../components/PagesContainer/index";
+import TitleForm from "../components/FormTitle/index";
+import FormInput from "../components/FormInput/index";
+import Button from "../components/Button/index";
+import LoadingGif from "../components/LoadingGif/index";
 
-import api from "../../services/api";
+import Form from "../styles/form";
 
-import isPasswordValid from "../../utils/isPasswordValid";
+import api from "../services/api/clientApi";
 
-import { useModal } from "../../providers/ModalProvider";
+import isPasswordValid from "../utils/isPasswordValid";
+
+import { useModal } from "../providers/ModalProvider";
+
+import redirect from "../services/redirect";
 
 const RecoverPassword = () => {
-  const { search } = useLocation();
-  const navigate = useNavigate();
-  const handleLink = (link) => navigate(link);
   const { handleShowModal } = useModal();
   const [formValues, setFormValues] = useState({});
   const [buttonChildren, setButtonChildren] = useState("Atualizar Senha");
+  const router = useRouter();
+  const [, query] = router.asPath.split("?");
 
   const handleRecoverPassword = async (e) => {
     e.preventDefault();
@@ -37,14 +39,14 @@ const RecoverPassword = () => {
     setButtonChildren(<LoadingGif />);
 
     await api
-      .patch(`/user/password/password-recover${search}`, {
+      .patch(`/user/password/password-recover?${query}`, {
         password: password.value,
         passwordConfirm: passwordConfirm.value,
       })
       .then(({ data }) => {
         setFormValues({});
         handleShowModal(data.response);
-        handleLink("/");
+        router.push("/");
       })
       .catch(({ response }) =>
         response
@@ -89,5 +91,7 @@ const RecoverPassword = () => {
       </>
     );
   };
+
+export const getServerSideProps = (context) => redirect(context);
   
 export default RecoverPassword;

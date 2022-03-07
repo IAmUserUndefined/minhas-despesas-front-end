@@ -1,18 +1,21 @@
 import React, { useState } from "react";
 
-import PagesContainer from "../../components/PagesContainer/index";
-import Form from "../../styles/form";
-import TitleForm from "../../components/FormTitle/index";
-import FormInput from "../../components/FormInput/index";
-import FormLink from "../../components/FormLink/index";
-import Button from "../../components/Button/index";
-import LoadingGif from "../../components/LoadingGif/index";
+import PagesContainer from "../components/PagesContainer";
+import TitleForm from "../components/FormTitle";
+import FormInput from "../components/FormInput";
+import FormLink from "../components/FormLink";
+import Button from "../components/Button";
+import LoadingGif from "../components/LoadingGif";
 
-import api from "../../services/api";
+import Form from "../styles/form";
 
-import isEmailValid from "../../utils/isEmailValid";
+import api from "../services/api/clientApi";
 
-import { useModal } from "../../providers/ModalProvider";
+import isEmailValid from "../utils/isEmailValid";
+
+import { useModal } from "../providers/ModalProvider";
+
+import redirect from "../services/redirect";
 
 const ForgetPassword = () => {
 
@@ -73,4 +76,6 @@ const ForgetPassword = () => {
     );
   };
   
+export const getServerSideProps = (context) => redirect(context);
+
 export default ForgetPassword;

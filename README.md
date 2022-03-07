@@ -19,7 +19,7 @@
 
 # Tecnologias
 - React JS
-- Create React App
+- Next JS
 - Styled Components
 - Javascript
 
@@ -35,5 +35,5 @@ Após clonar a aplicação, entre em sua pasta e rode o seguinte comando:
 # Execução
 Após a execução da instalação, rode o seguinte comando:
 ```sh
-  yarn start
+  yarn dev
 ```

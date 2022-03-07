@@ -1,38 +1,27 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react-hooks/rules-of-hooks */
 
 import React, { useState, useEffect } from 'react';
+import nookies from "nookies";
 
-import Header from "../../components/Header";
-import Aside from "../../components/Aside";
-import ContainerMain from "../../components/ContainerMain";
+import Header from "../components/Header";
+import Aside from "../components/Aside";
+import ContainerMain from "../components/ContainerMain";
 
-import InformationContainer from './styles';
+import InformationContainer from '../styles/pages/home';
 
-import api from "../../services/api";
+import api from "../services/api/serverApi";
 
-import { useModal } from "../../providers/ModalProvider";
+import auth from "../services/auth";
 
-const Home = () => {
+const Home = ({ data }) => {
 
-    const { handleShowModal } = useModal();
     const [expenses, setExpenses] = useState([]);
 
     useEffect(() => {
         let mounted = true;
-    
-        const fetchExpenses = async () => {
-          await api
-            .get("/expenses")
-            .then(({ data }) => (mounted ? setExpenses(data.response) : null))
-            .catch(({ response }) =>
-              response === undefined ? handleShowModal("Erro no servidor, as informações não pode ser apresentadas") : null
-            );
-        };
-    
-        fetchExpenses();
-    
+        setExpenses(data);
         return () => mounted = false;
-      }, [expenses]);
+    }, [data, expenses]);
 
     const handleTotalPrice = () => {
         let price = 0;
@@ -76,4 +65,26 @@ const Home = () => {
      );
 }
  
+export const getServerSideProps = async (context) => {
+
+    if(auth(context).redirect)
+        return auth(context);
+
+    const fetch = await api(context)
+                    .get("/expenses")
+                    .then(({ data }) => data)
+                    .catch(({ response }) =>
+                        response === undefined 
+                        ? "Erro no servidor, as informações não podem ser apresentadas" : response
+                    );
+
+    const data = await fetch.response;
+
+    return {
+          props: {
+              data
+          }
+      }
+}
+
 export default Home;

@@ -1,7 +1,14 @@
-import { useState, useEffect } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
 
-import api from "../../services/api";
-import history from "../../services/history";
+// Os campos que estão são uma estratégia de autentificação feita pelo front-end
+// Dessa forma tirando a responsabilidade do servidor
+// Os últimos campos comentados são os componentes que fazem essa autenficação no servidor
+
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import nookies from "nookies";
+
+import api from "../../services/api/clientApi";
 
 import isEmailValid from "../../utils/isEmailValid";
 import isPasswordValid from "../../utils/isPasswordValid";
@@ -11,29 +18,30 @@ import { useModal } from "../ModalProvider";
 import LoadingGif from "../../components/LoadingGif";
 
 const useAuth = () => {
-  const [authenticated, setAuthenticated] = useState(false);
-  const [expirySession, setExpirySession] = useState(false);
-  const [loading, setLoading] = useState(true);
+  // const [authenticated, setAuthenticated] = useState(false);
+  // const [expirySession, setExpirySession] = useState(false);
+  // const [loading, setLoading] = useState(true);
   const [buttonChildren, setButtonChildren] = useState("Login");
-  const { handleShowModal } = useModal();
   const [formValues, setFormValues] = useState({});
+  const { handleShowModal } = useModal();
+  const router = useRouter();
 
-  useEffect(() => {
-    const token = localStorage.getItem("tokenMinhasDespesas");
-    const tokenExpirytime = localStorage.getItem("tokenExpiryTimeMinhasDespesas");
+  // useEffect(() => {
+  //   const token = nookies.get().tokenMinhasDespesas;
+  //   const tokenExpirytime = nookies.get().tokenExpiryTimeMinhasDespesas;
 
-    if (token) {
+  //   if (token) {
 
-      if(Date.now() < tokenExpirytime) {
-        setAuthenticated(true);
-      }else{
-        setExpirySession(false);
-        handleLogout();
-      }
+  //     if(Date.now() < parseInt(tokenExpirytime)) {
+  //       setAuthenticated(true);
+  //     }else{
+  //       setExpirySession(false);
+  //       handleLogout();
+  //     }
       
-    }
-    setLoading(false);
-  }, []);
+  //   }
+  //   setLoading(false);
+  // }, []);
 
   const handleLogin = async (e) => {
 
@@ -54,6 +62,8 @@ const useAuth = () => {
 
     setButtonChildren(<LoadingGif />);
 
+    const tokenExpiryTime = new Date().setHours(new Date().getHours() + 2);
+
     await api
       .post("/user/login", {
         email: email.value,
@@ -62,11 +72,10 @@ const useAuth = () => {
       .then(({ data }) => {
         setFormValues({});
         setButtonChildren("Login");
-        localStorage.setItem("tokenMinhasDespesas", data.response);
-        localStorage.setItem("tokenExpiryTimeMinhasDespesas", new Date().setHours(new Date().getHours() + 2));
+        nookies.set(undefined, "tokenMinhasDespesas", data.response, { maxAge: 60 * 60 * 2 });
+        nookies.set(undefined, "tokenExpiryTimeMinhasDespesas", tokenExpiryTime, { maxAge: 60 * 60 * 2 });
         api.defaults.headers = { "Authorization": `Bearer ${data.response}` };
-        setAuthenticated(true);
-        history.push("/tasks");
+        router.push("/home");
       })
       .catch(({ response }) =>
         response
@@ -74,20 +83,57 @@ const useAuth = () => {
           : handleShowModal("Erro no Servidor, tente novamente mais tarde")
       );
 
-      setButtonChildren("Login");
+    setButtonChildren("Login");
   };
 
   const handleLogout = () => {
-    setAuthenticated(false);
-    localStorage.removeItem("tokenMinhasDespesas");
-    localStorage.removeItem("tokenExpiryTimeMinhasDespesas");
+    nookies.destroy(undefined,"tokenMinhasDespesas");
+    nookies.destroy(undefined, "tokenExpiryTimeMinhasDespesas");
     api.defaults.headers = { "Authorization": undefined };
-    history.push("/");
+    router.push("/");
   };
 
   return { 
-    handleLogin, handleLogout, authenticated, loading, expirySession, setExpirySession, buttonChildren, formValues, setFormValues 
+    handleLogin, handleLogout, buttonChildren, formValues, setFormValues 
   };
 };
 
 export default useAuth;
+
+// const PrivateRoute = (Component) => (props) => {
+
+//   const { loading, authenticated, expirySession, setExpirySession, handleLogout } = useAuth();
+//   const router = useRouter();
+
+//   if (loading) {
+//     return <LoadingBigGifContainer>
+//       <LoadingBigGif />
+//     </LoadingBigGifContainer>;
+//   }
+
+//   if (!authenticated) {
+//     router.push("/");
+//   }
+
+//   return <Component {...props} />
+
+// };
+
+// const PublicRoute = (Component) => (props) => {
+
+//   const { loading, authenticated } = useAuth();
+//   const router = useRouter();
+
+//   if (loading) {
+//     return <LoadingBigGifContainer>
+//       <LoadingBigGif />
+//     </LoadingBigGifContainer>;
+//   }
+
+//   if (authenticated) {
+//      router.push("/home");
+//   }
+
+//   return <Component {...props} />
+
+// };

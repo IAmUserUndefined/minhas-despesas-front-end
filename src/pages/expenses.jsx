@@ -1,38 +1,29 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useRouter } from 'next/router';
+import nookies from "nookies";
 
-import Header from "../../components/Header";
-import Aside from "../../components/Aside";
-import ContainerMain from "../../components/ContainerMain";
+import Header from "../components/Header";
+import Aside from "../components/Aside";
+import ContainerMain from "../components/ContainerMain";
 
-import { Table, UpdateButton, DeleteButton } from "./styles";
+import { Table, UpdateButton, DeleteButton } from "../styles/pages/expenses";
 
-import api from "../../services/api";
+import api from "../services/api/serverApi";
 
-import { useModal } from "../../providers/ModalProvider";
+import { useModal } from "../providers/ModalProvider";
 
-const Expenses = () => {
+import auth from "../services/auth";
+
+const Expenses = ({ data }) => {
     const { handleShowModal } = useModal();
-    const navigate = useNavigate();
-    const handleLink = (link) => navigate(link);
     const [expenses, setExpenses] = useState([]);
+    const router = useRouter();
 
     useEffect(() => {
         let mounted = true;
-    
-        const fetchExpenses = async () => {
-          await api
-            .get("/expenses")
-            .then(({ data }) => (mounted ? setExpenses(data.response) : null))
-            .catch(({ response }) =>
-              response === undefined ? handleShowModal("Erro no servidor, as despesas não pode ser apresentadas") : null
-            );
-        };
-    
-        fetchExpenses();
-    
+        setExpenses(data);
         return () => mounted = false;
     }, [expenses]);
 
@@ -47,7 +38,7 @@ const Expenses = () => {
     };
 
     const handleUpdateExpense = (id, expenseName, dueDate, price) => {
-      handleLink(`/update-expense?id=${id}&expenseName=${expenseName}&dueDate=${dueDate.split("T")[0]}&price=${price}`);
+      router.push(`/update-expense?id=${id}&expenseName=${expenseName}&dueDate=${dueDate.split("T")[0]}&price=${price}`);
     }
     
     return ( 
@@ -85,5 +76,27 @@ const Expenses = () => {
         </>
      );
 }
- 
+
+export const getServerSideProps = async (context) => {
+  
+  if(auth(context).redirect)
+    return auth(context);
+
+  const fetch = await api(context)
+                  .get("/expenses")
+                  .then(({ data }) => data)
+                  .catch(({ response }) =>
+                      response === undefined 
+                          ? "Erro no servidor, as informações não podem ser apresentadas" : response
+                  );
+
+  const data = await fetch.response;
+
+  return {
+        props: {
+            data
+        }
+    }
+}
+
 export default Expenses;

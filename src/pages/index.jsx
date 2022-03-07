@@ -1,13 +1,17 @@
 import React from "react";
 
-import PagesContainer from "../../components/PagesContainer/index";
-import Form from "../../styles/form";
-import TitleForm from "../../components/FormTitle/index";
-import FormInput from "../../components/FormInput/index";
-import FormLink from "../../components/FormLink/index";
-import Button from "../../components/Button/index";
+import Header from "../components/Header";
+import PagesContainer from "../components/PagesContainer";
+import TitleForm from "../components/FormTitle";
+import FormInput from "../components/FormInput";
+import FormLink from "../components/FormLink";
+import Button from "../components/Button";
 
-import { useAuth } from "../../providers/AuthProvider";
+import { useAuth } from "../providers/AuthProvider";
+
+import Form from "../styles/form";
+
+import redirect from "../services/redirect";
 
 const Login = () => {
 
@@ -37,5 +41,7 @@ const Login = () => {
     </>
   );
 };
+
+export const getServerSideProps = (context) => redirect(context);
 
 export default Login;

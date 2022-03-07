@@ -1,16 +1,19 @@
 import React, { useState } from "react";
 
-import Header from "../../components/Header";
-import Aside from "../../components/Aside";
-import ContainerMain from "../../components/ContainerMain";
-import Form from "../../styles/form";
-import FormInput from "../../components/FormInput/index";
-import Button from "../../components/Button/index";
-import LoadingGif from "../../components/LoadingGif/index";
+import Header from "../components/Header";
+import Aside from "../components/Aside";
+import ContainerMain from "../components/ContainerMain";
+import FormInput from "../components/FormInput/index";
+import Button from "../components/Button/index";
+import LoadingGif from "../components/LoadingGif/index";
 
-import api from "../../services/api";
+import Form from "../styles/form";
 
-import { useModal } from "../../providers/ModalProvider";
+import api from "../services/api/clientApi";
+
+import { useModal } from "../providers/ModalProvider";
+
+import auth from "../services/auth";
 
 const RegisterExpense = () => {
   const { handleShowModal } = useModal();
@@ -83,5 +86,7 @@ const RegisterExpense = () => {
     </>
   );
 };
+
+export const getServerSideProps = (context) => auth(context);
 
 export default RegisterExpense;

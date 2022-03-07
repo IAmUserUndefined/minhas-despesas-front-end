@@ -27,6 +27,11 @@ const ContainerAside = styled.aside`
         display: flex;
         align-items: center;
         font-size: 1.1rem;
+
+        > a {
+            color: #000;
+            text-decoration: none;
+        }
     }
 
     > ul li svg {

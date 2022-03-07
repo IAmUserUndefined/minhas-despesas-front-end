@@ -1,30 +1,36 @@
-import React, { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useRouter } from 'next/router';
 
-import Header from "../../components/Header";
-import Aside from "../../components/Aside";
-import ContainerMain from "../../components/ContainerMain";
-import Form from "../../styles/form";
-import FormInput from "../../components/FormInput/index";
-import Button from "../../components/Button/index";
-import LoadingGif from "../../components/LoadingGif/index";
+import Header from "../components/Header";
+import Aside from "../components/Aside";
+import ContainerMain from "../components/ContainerMain";
+import FormInput from "../components/FormInput/index";
+import Button from "../components/Button/index";
+import LoadingGif from "../components/LoadingGif/index";
 
-import api from "../../services/api";
+import Form from "../styles/form";
 
-import { useModal } from "../../providers/ModalProvider";
+import api from "../services/api/clientApi";
+
+import { useModal } from "../providers/ModalProvider";
+
+import auth from "../services/auth";
 
 const UpdateExpense = () => {
   const { handleShowModal } = useModal();
-  const { search } = useLocation();
-  const query = new URLSearchParams(search);
-  const [formValues, setFormValues] = useState({
-    expenseName: query.get("expenseName"),
-    dueDate: query.get("dueDate"),
-    price: query.get("price")
-  });
+  const { query } = useRouter();
+  const { id, expenseName, dueDate, price } = query;
   const [buttonChildren, setButtonChildren] = useState("Atualizar Despesa");
-  const navigate = useNavigate();
-  const handleLink = () => navigate("/expenses");
+  const [formValues, setFormValues] = useState({});
+  const router = useRouter();
+
+  useEffect(() => {
+    setFormValues({
+      expenseName: expenseName,
+      dueDate: dueDate,
+      price: price
+    })
+  }, [dueDate, expenseName, price]);
 
   const handleUpdateExpense = async (e) => {
     e.preventDefault();
@@ -37,7 +43,7 @@ const UpdateExpense = () => {
     setButtonChildren(<LoadingGif />);
 
     await api
-      .put(`/expenses/update/${query.get("id")}`, {
+      .put(`/expenses/update/${id}`, {
         expenseName: expenseName.value,
         dueDate: dueDate.value,
         price: price.value,
@@ -53,8 +59,8 @@ const UpdateExpense = () => {
       );
 
     setButtonChildren("Atualizar Despesa");
+    router.push("/expenses");
 
-    handleLink();
   };
 
   return (
@@ -97,5 +103,7 @@ const UpdateExpense = () => {
     </>
   );
 };
+
+export const getServerSideProps = (context) => auth(context);
 
 export default UpdateExpense;

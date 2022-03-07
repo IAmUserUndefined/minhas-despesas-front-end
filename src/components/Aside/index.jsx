@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from "react-router-dom";
+import Link from "next/link";
 
 import ContainerAside from './styles';
 
@@ -13,7 +13,6 @@ import { useMenu } from "../../providers/MenuProvider";
 import { useAuth } from "../../providers/AuthProvider";
 
 const Aside = () => {
-    const navigate = useNavigate();
     const handleLink = (link) => navigate(link);  
     const { left, closeMenu } = useMenu();
     const { handleLogout } = useAuth();
@@ -22,27 +21,30 @@ const Aside = () => {
         <>
             <ContainerAside left={left}>
                 <ul>
-                    <li onClick={() => {
-                        closeMenu();
-                        handleLink("/home");
-                    }}><AiOutlineHome /> Home</li>
+                    <li onClick={() => { closeMenu() }}>
+                        <AiOutlineHome /> 
+                        <Link href="/home">Home</Link>
+                    </li>
 
-                    <li onClick={() => {
-                        closeMenu();
-                        handleLink("/register-expenses");
-                    }}><GiArchiveRegister /> Cadastrar Despesas</li>
+                    <li onClick={() => { closeMenu() }}>
+                        <GiArchiveRegister /> 
+                        <Link href="/register-expenses">Cadastrar Despesas</Link>
+                    </li>
 
-                    <li onClick={() => {
-                        closeMenu();
-                        handleLink("/expenses");
-                    }}><GiExpense /> Consultar Despesas</li>
+                    <li onClick={() => { closeMenu() }}>
+                        <GiExpense /> 
+                        <Link href="/expenses">Consultar Despesas</Link>
+                    </li>
 
-                    <li onClick={() => {
-                        closeMenu();
-                        handleLink("/config-user");
-                    }}><GrConfigure /> Configurações do Usuário</li>
+                    <li onClick={() => { closeMenu() }}>
+                        <GrConfigure /> 
+                        <Link href="/config-user">Configurações do Usuário</Link>
+                    </li>
 
-                    <li onClick={() => handleLogout()}><FiLogOut /> Logout</li>
+                    <li onClick={() => handleLogout()}>
+                        <FiLogOut /> 
+                        Logout
+                    </li>
                 </ul>
 
             </ContainerAside>

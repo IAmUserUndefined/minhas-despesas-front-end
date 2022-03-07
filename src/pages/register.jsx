@@ -1,19 +1,22 @@
 import React, { useState } from "react";
 
-import PagesContainer from "../../components/PagesContainer/index";
-import Form from "../../styles/form";
-import TitleForm from "../../components/FormTitle/index";
-import FormInput from "../../components/FormInput/index";
-import FormLink from "../../components/FormLink/index";
-import Button from "../../components/Button/index";
-import LoadingGif from "../../components/LoadingGif/index";
+import PagesContainer from "../components/PagesContainer/index";
+import TitleForm from "../components/FormTitle/index";
+import FormInput from "../components/FormInput/index";
+import FormLink from "../components/FormLink/index";
+import Button from "../components/Button/index";
+import LoadingGif from "../components/LoadingGif/index";
 
-import api from "../../services/api";
+import Form from "../styles/form";
 
-import isEmailValid from "../../utils/isEmailValid";
-import isPasswordValid from "../../utils/isPasswordValid";
+import api from "../services/api/clientApi";
 
-import { useModal } from "../../providers/ModalProvider";
+import isEmailValid from "../utils/isEmailValid";
+import isPasswordValid from "../utils/isPasswordValid";
+
+import { useModal } from "../providers/ModalProvider";
+
+import redirect from "../services/redirect";
 
 const Register = () => {
   const { handleShowModal } = useModal();
@@ -95,5 +98,7 @@ const Register = () => {
     </>
   );
 };
+
+export const getServerSideProps = (context) => redirect(context);
 
 export default Register;

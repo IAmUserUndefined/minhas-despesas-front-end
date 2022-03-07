@@ -1,21 +1,23 @@
 import React, { useEffect } from "react";
-import { useNavigate, useLocation } from "react-router";
+import { useRouter } from 'next/router';
 
-import VerifyEmailTitle from "../../components/VerifyEmailTitle/index";
+import VerifyEmailTitle from "../components/VerifyEmailTitle/index";
 
-import api from "../../services/api";
+import api from "../services/api/clientApi";
 
-import { useModal } from "../../providers/ModalProvider";
+import { useModal } from "../providers/ModalProvider";
+
+import redirect from "../services/redirect";
 
 const VerifyEmail = () => {
-  const navigate = useNavigate();
-  const { search } = useLocation();
   const { handleShowModal } = useModal();
+  const router = useRouter();
+  const [, query] = router.asPath.split("?");
 
   useEffect(() => {
     const handleVerifyEmail = async () => {
       await api
-        .post(`/verify-email${search}`)
+        .post(`/verify-email?${query}`)
         .then(({ data }) => handleShowModal(data.response))
         .catch(({ response }) =>
           response
@@ -24,7 +26,7 @@ const VerifyEmail = () => {
         );
     };
     handleVerifyEmail();
-    navigate("/");
+    router.push("/");
   });
 
     return ( 
@@ -34,4 +36,6 @@ const VerifyEmail = () => {
      );
 }
  
+export const getServerSideProps = (context) => redirect(context);
+
 export default VerifyEmail;
