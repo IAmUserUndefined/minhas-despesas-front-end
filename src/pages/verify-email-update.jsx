@@ -1,16 +1,15 @@
 import React, { useEffect } from "react";
 import { useRouter } from 'next/router';
 
+import PrivateRoute from "../components/PrivateRoute";
 import VerifyEmailTitle from "../components/VerifyEmailTitle/index";
 
 import api from "../services/api/clientApi";
 
 import { useModal } from "../providers/ModalProvider";
 
-import auth from "../services/auth";
-
 const VerifyEmailUpdate = () => {
-  const { handleShowModal } = useModal();
+    const { handleShowModal } = useModal();
     const router = useRouter();
     const [, query] = router.asPath.split("?");
   
@@ -36,7 +35,5 @@ const VerifyEmailUpdate = () => {
         </>
      );
 }
- 
-export const getServerSideProps = (context) => auth(context);
 
-export default VerifyEmailUpdate;
+export default PrivateRoute(VerifyEmailUpdate);

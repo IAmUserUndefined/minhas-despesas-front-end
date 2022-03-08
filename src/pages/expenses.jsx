@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
+import PrivateRoute from "../components/PrivateRoute";
 import Header from "../components/Header";
 import Aside from "../components/Aside";
 import ContainerMain from "../components/ContainerMain";
@@ -12,8 +13,6 @@ import { Table, UpdateButton, DeleteButton } from "../styles/pages/expenses";
 import api from "../services/api/clientApi";
 
 import { useModal } from "../providers/ModalProvider";
-
-import auth from "../services/auth";
 
 const Expenses = () => {
     const { handleShowModal } = useModal();
@@ -87,6 +86,4 @@ const Expenses = () => {
      );
 }
 
-export const getServerSideProps = async (context) => auth(context);
-
-export default Expenses;
+export default PrivateRoute(Expenses);

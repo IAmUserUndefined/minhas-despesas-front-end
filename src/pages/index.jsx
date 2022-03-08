@@ -1,6 +1,6 @@
 import React from "react";
 
-import Header from "../components/Header";
+import PublicRoute from "../components/PublicRoute";
 import PagesContainer from "../components/PagesContainer";
 import TitleForm from "../components/FormTitle";
 import FormInput from "../components/FormInput";
@@ -10,8 +10,6 @@ import Button from "../components/Button";
 import { useAuth } from "../providers/AuthProvider";
 
 import Form from "../styles/form";
-
-import redirect from "../services/redirect";
 
 const Login = () => {
 
@@ -42,6 +40,4 @@ const Login = () => {
   );
 };
 
-export const getServerSideProps = (context) => redirect(context);
-
-export default Login;
+export default PublicRoute(Login);

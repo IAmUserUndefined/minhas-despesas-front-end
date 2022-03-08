@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from 'next/router';
 
+import PrivateRoute from "../components/PrivateRoute";
 import Header from "../components/Header";
 import Aside from "../components/Aside";
 import ContainerMain from "../components/ContainerMain";
@@ -14,23 +15,17 @@ import api from "../services/api/clientApi";
 
 import { useModal } from "../providers/ModalProvider";
 
-import auth from "../services/auth";
-
 const UpdateExpense = () => {
   const { handleShowModal } = useModal();
   const { query } = useRouter();
   const { id, expenseName, dueDate, price } = query;
   const [buttonChildren, setButtonChildren] = useState("Atualizar Despesa");
-  const [formValues, setFormValues] = useState({});
+  const [formValues, setFormValues] = useState({
+    expenseName: expenseName,
+    dueDate: dueDate,
+    price: price
+  });
   const router = useRouter();
-
-  useEffect(() => {
-    setFormValues({
-      expenseName: expenseName,
-      dueDate: dueDate,
-      price: price
-    })
-  }, [dueDate, expenseName, price]);
 
   const handleUpdateExpense = async (e) => {
     e.preventDefault();
@@ -104,6 +99,4 @@ const UpdateExpense = () => {
   );
 };
 
-export const getServerSideProps = (context) => auth(context);
-
-export default UpdateExpense;
+export default PrivateRoute(UpdateExpense);

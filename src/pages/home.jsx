@@ -1,26 +1,40 @@
-/* eslint-disable react-hooks/rules-of-hooks */
+/* eslint-disable react-hooks/exhaustive-deps */
 
 import React, { useState, useEffect } from 'react';
 
+import PrivateRoute from "../components/PrivateRoute";
 import Header from "../components/Header";
 import Aside from "../components/Aside";
 import ContainerMain from "../components/ContainerMain";
 
 import InformationContainer from '../styles/pages/home';
 
-import api from "../services/api/serverApi";
+import api from "../services/api/clientApi";
 
-import auth from "../services/auth";
+import { useModal } from "../providers/ModalProvider";
 
-const Home = ({ data }) => {
+const Home = () => {
 
     const [expenses, setExpenses] = useState([]);
+    const { handleShowModal } = useModal();
 
     useEffect(() => {
         let mounted = true;
-        setExpenses(data);
+        
+        const fetchExpenses = async () => {
+            await api
+                .get("/expenses")
+                .then(({ data }) => mounted ? setExpenses(data.response) : null)
+                .catch(({ response }) =>
+                    response === undefined 
+                    ? handleShowModal(response) : handleShowModal("Erro no servidor, as informações não podem ser apresentadas") 
+                );
+        }
+
+        fetchExpenses();
+
         return () => mounted = false;
-    }, [data, expenses]);
+    }, [expenses]);
 
     const handleTotalPrice = () => {
         let price = 0;
@@ -63,29 +77,5 @@ const Home = ({ data }) => {
         </>
      );
 }
- 
-export const getServerSideProps = async (context) => {
 
-    const { redirect } = auth(context);
-
-    if(redirect)
-        return redirect;
-
-    const fetch = await api(context)
-                    .get("/expenses")
-                    .then(({ data }) => data)
-                    .catch(({ response }) =>
-                        response === undefined 
-                        ? "Erro no servidor, as informações não podem ser apresentadas" : response
-                    );
-
-    const data = await fetch.response;
-
-    return {
-          props: {
-              data
-          }
-      }
-}
-
-export default Home;
+export default PrivateRoute(Home);
