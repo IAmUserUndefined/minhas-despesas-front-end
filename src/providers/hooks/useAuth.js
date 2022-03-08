@@ -15,7 +15,6 @@ import LoadingGif from "../../components/LoadingGif";
 
 const useAuth = () => {
   const [authenticated, setAuthenticated] = useState(false);
-  const [expirySession, setExpirySession] = useState(false);
   const [loading, setLoading] = useState(true);
   const [buttonChildren, setButtonChildren] = useState("Login");
   const [formValues, setFormValues] = useState({});
@@ -26,16 +25,9 @@ const useAuth = () => {
     const token = nookies.get().tokenMinhasDespesas;
     const tokenExpirytime = nookies.get().tokenExpiryTimeMinhasDespesas;
 
-    if (token) {
+    if(token) 
+      Date.now() < parseInt(tokenExpirytime) ? setAuthenticated(true) : handleLogout();
 
-      if(Date.now() < parseInt(tokenExpirytime)) {
-        setAuthenticated(true);
-      }else{
-        setExpirySession(false);
-        handleLogout();
-      }
-      
-    }
     setLoading(false);
   }, []);
 
@@ -92,7 +84,7 @@ const useAuth = () => {
   };
 
   return { 
-    handleLogin, handleLogout, buttonChildren, formValues, setFormValues, authenticated, expirySession, loading 
+    handleLogin, handleLogout, buttonChildren, formValues, setFormValues, authenticated, loading 
   };
 };
 

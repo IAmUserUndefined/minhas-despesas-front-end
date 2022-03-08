@@ -2,39 +2,17 @@
 
 import React, { useState, useEffect } from 'react';
 
-import PrivateRoute from "../components/PrivateRoute";
 import Header from "../components/Header";
 import Aside from "../components/Aside";
 import ContainerMain from "../components/ContainerMain";
 
 import InformationContainer from '../styles/pages/home';
 
-import api from "../services/api/clientApi";
+import api from "../services/api/serverApi";
 
-import { useModal } from "../providers/ModalProvider";
+import auth from "../services/auth";
 
-const Home = () => {
-
-    const [expenses, setExpenses] = useState([]);
-    const { handleShowModal } = useModal();
-
-    useEffect(() => {
-        let mounted = true;
-        
-        const fetchExpenses = async () => {
-            await api
-                .get("/expenses")
-                .then(({ data }) => mounted ? setExpenses(data.response) : null)
-                .catch(({ response }) =>
-                    response === undefined 
-                    ? handleShowModal(response) : handleShowModal("Erro no servidor, as informações não podem ser apresentadas") 
-                );
-        }
-
-        fetchExpenses();
-
-        return () => mounted = false;
-    }, [expenses]);
+const Home = ({ expenses }) => {
 
     const handleTotalPrice = () => {
         let price = 0;
@@ -78,4 +56,22 @@ const Home = () => {
      );
 }
 
-export default PrivateRoute(Home);
+export const getServerSideProps = async (context) => {
+
+    if(auth(context))
+        return auth(context);
+
+    const fetch = await api(context)
+                    .get("/expenses")
+                    .then(({ data }) => data);
+
+    const data = await fetch.response;
+
+    return {
+            props: {
+                expenses: data
+            }
+        }
+}
+
+export default Home;

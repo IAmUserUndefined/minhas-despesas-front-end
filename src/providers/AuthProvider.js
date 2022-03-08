@@ -9,8 +9,6 @@ export const AuthProvider = ({ children }) => {
     handleLogout,
     authenticated,
     loading,
-    expirySession,
-    setExpirySession,
     buttonChildren,
     formValues, 
     setFormValues
@@ -23,8 +21,6 @@ export const AuthProvider = ({ children }) => {
         handleLogout,
         authenticated,
         loading,
-        expirySession,
-        setExpirySession,
         buttonChildren,
         formValues, 
         setFormValues
