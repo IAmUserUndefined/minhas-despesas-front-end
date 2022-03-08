@@ -7,6 +7,8 @@ export const AuthProvider = ({ children }) => {
   const {
     handleLogin,
     handleLogout,
+    authenticated,
+    loading,
     buttonChildren,
     formValues, 
     setFormValues
@@ -17,6 +19,8 @@ export const AuthProvider = ({ children }) => {
       value={{
         handleLogin,
         handleLogout,
+        authenticated,
+        loading,
         buttonChildren,
         formValues, 
         setFormValues

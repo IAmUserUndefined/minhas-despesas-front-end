@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import nookies from "nookies";
@@ -12,10 +14,22 @@ import { useModal } from "../ModalProvider";
 import LoadingGif from "../../components/LoadingGif";
 
 const useAuth = () => {
+  const [authenticated, setAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [buttonChildren, setButtonChildren] = useState("Login");
   const [formValues, setFormValues] = useState({});
   const { handleShowModal } = useModal();
   const router = useRouter();
+
+  useEffect(() => {
+    const token = nookies.get().tokenMinhasDespesas;
+    const tokenExpirytime = nookies.get().tokenExpiryTimeMinhasDespesas;
+
+    if(token) 
+      Date.now() < parseInt(tokenExpirytime) ? setAuthenticated(true) : handleLogout();
+
+    setLoading(false);
+  }, []);
 
   const handleLogin = async (e) => {
 
@@ -44,6 +58,7 @@ const useAuth = () => {
         password: password.value,
       })
       .then(({ data }) => {
+        setAuthenticated(true);
         setFormValues({});
         setButtonChildren("Login");
         nookies.set(undefined, "tokenMinhasDespesas", data.response, { maxAge: 60 * 60 * 2 });
@@ -61,6 +76,7 @@ const useAuth = () => {
   };
 
   const handleLogout = () => {
+    setAuthenticated(false);
     nookies.destroy(undefined,"tokenMinhasDespesas");
     nookies.destroy(undefined, "tokenExpiryTimeMinhasDespesas");
     api.defaults.headers = { "Authorization": undefined };
@@ -68,7 +84,7 @@ const useAuth = () => {
   };
 
   return { 
-    handleLogin, handleLogout, buttonChildren, formValues, setFormValues 
+    handleLogin, handleLogout, buttonChildren, formValues, setFormValues, authenticated, loading 
   };
 };
 

@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/rules-of-hooks */
+/* eslint-disable react-hooks/exhaustive-deps */
 
 import React, { useState, useEffect } from 'react';
 
@@ -12,15 +12,7 @@ import api from "../services/api/serverApi";
 
 import auth from "../services/auth";
 
-const Home = ({ data }) => {
-
-    const [expenses, setExpenses] = useState([]);
-
-    useEffect(() => {
-        let mounted = true;
-        setExpenses(data);
-        return () => mounted = false;
-    }, [data, expenses]);
+const Home = ({ expenses }) => {
 
     const handleTotalPrice = () => {
         let price = 0;
@@ -63,29 +55,23 @@ const Home = ({ data }) => {
         </>
      );
 }
- 
+
 export const getServerSideProps = async (context) => {
 
-    const { redirect } = auth(context);
-
-    if(redirect)
-        return redirect;
+    if(auth(context))
+        return auth(context);
 
     const fetch = await api(context)
                     .get("/expenses")
-                    .then(({ data }) => data)
-                    .catch(({ response }) =>
-                        response === undefined 
-                        ? console.log("Erro no servidor, as informações não podem ser apresentadas") : console.log(response)
-                    );
+                    .then(({ data }) => data);
 
     const data = await fetch.response;
 
     return {
-          props: {
-              data
-          }
-      }
+            props: {
+                expenses: data
+            }
+        }
 }
 
 export default Home;

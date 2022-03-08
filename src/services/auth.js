@@ -9,12 +9,14 @@ const auth = (context) => {
             permanent: false,
         }
     }
-    const props = {
-        props: {}
+    const authentification = () => {
+        nookies.destroy(undefined,"tokenMinhasDespesas");
+        nookies.destroy(undefined, "tokenExpiryTimeMinhasDespesas");
+        return redirect;
     }
 
-    return !token ? redirect 
-                : Date.now() < tokenExpiryTime ? props : redirect; 
+    return !token ? authentification() 
+                : Date.now() > parseInt(tokenExpiryTime) ? authentification() : null; 
 }
 
 export default auth;

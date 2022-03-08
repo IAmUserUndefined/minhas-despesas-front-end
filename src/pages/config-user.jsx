@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+import PrivateRoute from "../components/PrivateRoute";
 import Header from "../components/Header";
 import Aside from "../components/Aside";
 import ContainerMain from "../components/ContainerMain";
@@ -16,8 +17,6 @@ import isPasswordValid from "../utils/isPasswordValid";
 
 import { useModal } from "../providers/ModalProvider";
 import { useAuth } from "../providers/AuthProvider";
-
-import auth from "../services/auth";
 
 const ConfigUser = () => {
   const { handleShowModal } = useModal();
@@ -205,6 +204,4 @@ const ConfigUser = () => {
   );
 };
 
-export const getServerSideProps = (context) => auth(context);
-
-export default ConfigUser;
+export default PrivateRoute(ConfigUser);

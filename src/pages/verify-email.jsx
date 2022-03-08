@@ -1,13 +1,12 @@
 import React, { useEffect } from "react";
 import { useRouter } from 'next/router';
 
+import PublicRoute from "../components/PublicRoute";
 import VerifyEmailTitle from "../components/VerifyEmailTitle/index";
 
 import api from "../services/api/clientApi";
 
 import { useModal } from "../providers/ModalProvider";
-
-import redirect from "../services/redirect";
 
 const VerifyEmail = () => {
   const { handleShowModal } = useModal();
@@ -36,6 +35,4 @@ const VerifyEmail = () => {
      );
 }
  
-export const getServerSideProps = (context) => redirect(context);
-
-export default VerifyEmail;
+export default PublicRoute(VerifyEmail);

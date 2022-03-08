@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+import PrivateRoute from "../components/PrivateRoute";
 import Header from "../components/Header";
 import Aside from "../components/Aside";
 import ContainerMain from "../components/ContainerMain";
@@ -12,8 +13,6 @@ import Form from "../styles/form";
 import api from "../services/api/clientApi";
 
 import { useModal } from "../providers/ModalProvider";
-
-import auth from "../services/auth";
 
 const RegisterExpense = () => {
   const { handleShowModal } = useModal();
@@ -87,6 +86,4 @@ const RegisterExpense = () => {
   );
 };
 
-export const getServerSideProps = (context) => auth(context);
-
-export default RegisterExpense;
+export default PrivateRoute(RegisterExpense);

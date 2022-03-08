@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+import PublicRoute from "../components/PublicRoute";
 import PagesContainer from "../components/PagesContainer/index";
 import TitleForm from "../components/FormTitle/index";
 import FormInput from "../components/FormInput/index";
@@ -15,8 +16,6 @@ import isEmailValid from "../utils/isEmailValid";
 import isPasswordValid from "../utils/isPasswordValid";
 
 import { useModal } from "../providers/ModalProvider";
-
-import redirect from "../services/redirect";
 
 const Register = () => {
   const { handleShowModal } = useModal();
@@ -99,6 +98,4 @@ const Register = () => {
   );
 };
 
-export const getServerSideProps = (context) => redirect(context);
-
-export default Register;
+export default PublicRoute(Register);

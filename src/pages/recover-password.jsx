@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 
+import PublicRoute from "../components/PublicRoute";
 import PagesContainer from "../components/PagesContainer/index";
 import TitleForm from "../components/FormTitle/index";
 import FormInput from "../components/FormInput/index";
@@ -14,8 +15,6 @@ import api from "../services/api/clientApi";
 import isPasswordValid from "../utils/isPasswordValid";
 
 import { useModal } from "../providers/ModalProvider";
-
-import redirect from "../services/redirect";
 
 const RecoverPassword = () => {
   const { handleShowModal } = useModal();
@@ -91,7 +90,5 @@ const RecoverPassword = () => {
       </>
     );
   };
-
-export const getServerSideProps = (context) => redirect(context);
   
-export default RecoverPassword;
+export default PublicRoute(RecoverPassword);

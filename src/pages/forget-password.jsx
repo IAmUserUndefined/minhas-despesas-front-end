@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+import PublicRoute from "../components/PublicRoute";
 import PagesContainer from "../components/PagesContainer";
 import TitleForm from "../components/FormTitle";
 import FormInput from "../components/FormInput";
@@ -14,8 +15,6 @@ import api from "../services/api/clientApi";
 import isEmailValid from "../utils/isEmailValid";
 
 import { useModal } from "../providers/ModalProvider";
-
-import redirect from "../services/redirect";
 
 const ForgetPassword = () => {
 
@@ -75,7 +74,5 @@ const ForgetPassword = () => {
       </>
     );
   };
-  
-export const getServerSideProps = (context) => redirect(context);
 
-export default ForgetPassword;
+export default PublicRoute(ForgetPassword);

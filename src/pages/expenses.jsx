@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useRouter } from 'next/router';
 
 import Header from "../components/Header";
@@ -9,42 +9,27 @@ import ContainerMain from "../components/ContainerMain";
 
 import { Table, UpdateButton, DeleteButton } from "../styles/pages/expenses";
 
-import api from "../services/api/clientApi";
+import serverApi from "../services/api/serverApi";
+import clientApi from "../services/api/clientApi";
 
 import { useModal } from "../providers/ModalProvider";
 
 import auth from "../services/auth";
 
-const Expenses = () => {
+const Expenses = ({ expenses }) => {
     const { handleShowModal } = useModal();
-    const [expenses, setExpenses] = useState([]);
     const router = useRouter();
 
-    useEffect(() => {
-        let mounted = true;
-    
-        const fetchExpenses = async () => {
-          await api
-            .get("/expenses")
-            .then(({ data }) => (mounted ? setExpenses(data.response) : null))
-            .catch(({ response }) =>
-              response === undefined ? handleShowModal("Erro no servidor, as despesas não pode ser apresentadas") : null
-            );
-        };
-    
-        fetchExpenses();
-    
-        return () => mounted = false;
-    }, [expenses]);
-
     const handleExpenseDeletion = async (expenseId) => {
-      await api
+      await clientApi
         .delete(`/expenses/delete/${expenseId}`)
         .catch(({ response }) =>
           response
             ? handleShowModal(response.data.response)
             : handleShowModal("Erro no Servidor")
         );
+
+        router.push("/expenses");
     };
 
     const handleUpdateExpense = (id, expenseName, dueDate, price) => {
@@ -87,6 +72,22 @@ const Expenses = () => {
      );
 }
 
-export const getServerSideProps = async (context) => auth(context);
+export const getServerSideProps = async (context) => {
+
+  if(auth(context))
+      return auth(context);
+
+  const fetch = await serverApi(context)
+                  .get("/expenses")
+                  .then(({ data }) => data)
+
+  const expenses = await fetch.response;
+
+  return {
+        props: {
+            expenses
+        }
+    }
+}
 
 export default Expenses;
