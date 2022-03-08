@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+
 import React, { useEffect } from "react";
 import { useRouter } from 'next/router';
 
@@ -26,7 +28,7 @@ const VerifyEmail = () => {
     };
     handleVerifyEmail();
     router.push("/");
-  });
+  }, []);
 
     return ( 
         <>
