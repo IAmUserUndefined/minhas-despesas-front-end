@@ -10,7 +10,7 @@ import { useModal } from "../providers/ModalProvider";
 import auth from "../services/auth";
 
 const VerifyEmailUpdate = () => {
-  const { handleShowModal } = useModal();
+    const { handleShowModal } = useModal();
     const router = useRouter();
     const [, query] = router.asPath.split("?");
   

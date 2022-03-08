@@ -76,7 +76,7 @@ export const getServerSideProps = async (context) => {
                     .then(({ data }) => data)
                     .catch(({ response }) =>
                         response === undefined 
-                        ? "Erro no servidor, as informações não podem ser apresentadas" : response
+                        ? console.log("Erro no servidor, as informações não podem ser apresentadas") : console.log(response)
                     );
 
     const data = await fetch.response;

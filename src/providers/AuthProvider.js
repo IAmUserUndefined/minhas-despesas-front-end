@@ -3,17 +3,10 @@ import hook from "./hooks/useAuth";
 
 const AuthContext = createContext();
 
-// Os campos que estão são uma estratégia de autentificação feita pelo front-end
-// Dessa forma tirando a responsabilidade do servidor
-
 export const AuthProvider = ({ children }) => {
   const {
     handleLogin,
     handleLogout,
-    // authenticated,
-    // loading,
-    // expirySession,
-    // setExpirySession,
     buttonChildren,
     formValues, 
     setFormValues
@@ -24,10 +17,6 @@ export const AuthProvider = ({ children }) => {
       value={{
         handleLogin,
         handleLogout,
-        // authenticated,
-        // loading,
-        // expirySession,
-        // setExpirySession,
         buttonChildren,
         formValues, 
         setFormValues

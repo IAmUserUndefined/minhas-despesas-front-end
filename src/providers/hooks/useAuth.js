@@ -1,9 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-
-// Os campos que estão são uma estratégia de autentificação feita pelo front-end
-// Dessa forma tirando a responsabilidade do servidor
-// Os últimos campos comentados são os componentes que fazem essa autenficação no servidor
-
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import nookies from "nookies";
@@ -18,30 +12,10 @@ import { useModal } from "../ModalProvider";
 import LoadingGif from "../../components/LoadingGif";
 
 const useAuth = () => {
-  // const [authenticated, setAuthenticated] = useState(false);
-  // const [expirySession, setExpirySession] = useState(false);
-  // const [loading, setLoading] = useState(true);
   const [buttonChildren, setButtonChildren] = useState("Login");
   const [formValues, setFormValues] = useState({});
   const { handleShowModal } = useModal();
   const router = useRouter();
-
-  // useEffect(() => {
-  //   const token = nookies.get().tokenMinhasDespesas;
-  //   const tokenExpirytime = nookies.get().tokenExpiryTimeMinhasDespesas;
-
-  //   if (token) {
-
-  //     if(Date.now() < parseInt(tokenExpirytime)) {
-  //       setAuthenticated(true);
-  //     }else{
-  //       setExpirySession(false);
-  //       handleLogout();
-  //     }
-      
-  //   }
-  //   setLoading(false);
-  // }, []);
 
   const handleLogin = async (e) => {
 
@@ -99,41 +73,3 @@ const useAuth = () => {
 };
 
 export default useAuth;
-
-// const PrivateRoute = (Component) => (props) => {
-
-//   const { loading, authenticated, expirySession, setExpirySession, handleLogout } = useAuth();
-//   const router = useRouter();
-
-//   if (loading) {
-//     return <LoadingBigGifContainer>
-//       <LoadingBigGif />
-//     </LoadingBigGifContainer>;
-//   }
-
-//   if (!authenticated) {
-//     router.push("/");
-//   }
-
-//   return <Component {...props} />
-
-// };
-
-// const PublicRoute = (Component) => (props) => {
-
-//   const { loading, authenticated } = useAuth();
-//   const router = useRouter();
-
-//   if (loading) {
-//     return <LoadingBigGifContainer>
-//       <LoadingBigGif />
-//     </LoadingBigGifContainer>;
-//   }
-
-//   if (authenticated) {
-//      router.push("/home");
-//   }
-
-//   return <Component {...props} />
-
-// };
